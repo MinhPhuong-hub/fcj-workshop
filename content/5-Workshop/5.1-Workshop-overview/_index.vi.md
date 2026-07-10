@@ -6,272 +6,68 @@ chapter: false
 pre: " <b> 5.1. </b> "
 ---
 
+## Mục tiêu của workshop
 
-## Chúng ta đang xây dựng gì?
+Workshop này trình bày quá trình triển khai thực tế của **Secure Internal Job Processing Platform on AWS**, một hệ thống backend dùng để xử lý các business jobs nội bộ trong môi trường AWS private-first.
 
-Trong workshop này, chúng ta triển khai hoàn chỉnh một **Nền tảng Xử lý Tác vụ Nội bộ An toàn trên AWS (Secure Internal Job Processing Platform on AWS)**.
+Mục tiêu chính của workshop không phải là xây dựng một website public, mà là chứng minh rằng một workload backend nội bộ có thể được triển khai trên AWS với các yêu cầu sau:
 
-Đây không phải là một ứng dụng web công khai và cũng không có giao diện người dùng (UI) dành cho khách hàng. Dự án mô phỏng một nền tảng hạ tầng backend mà doanh nghiệp có thể sử dụng để xử lý các tác vụ dữ liệu nội bộ nhạy cảm như:
+- worker và database không public ra Internet;
+- job được xử lý thông qua queue thay vì gọi trực tiếp;
+- failed jobs được cô lập bằng Dead Letter Queue;
+- hệ thống có monitoring và alerting;
+- có audit evidence phục vụ kiểm tra sau triển khai;
+- toàn bộ hạ tầng được triển khai bằng Terraform;
+- cấu hình hạ tầng được kiểm tra trước bằng OPA/Rego.
 
-- Kiểm tra và xác thực file CSV khách hàng
-- Kiểm tra batch giao dịch
-- Tạo bằng chứng phục vụ kiểm toán (audit evidence)
-- Xử lý tác vụ tuân thủ định kỳ
-- Các workload dữ liệu nội bộ khác
+Nói cách khác, workshop này chứng minh quá trình chuyển một thiết kế bảo mật cloud từ proposal thành hạ tầng AWS thật, có thể kiểm chứng bằng bằng chứng triển khai và vận hành.
 
-Đối với các lập trình viên web, có thể hình dung hệ thống này theo cách tương đương sau:
+---
 
-| Khái niệm trong ứng dụng Web | Thành phần tương ứng trong dự án |
-|---|---|
-| Người dùng gửi form | Một business job được gửi vào SQS |
-| HTTP API Endpoint | SQS Processing Queue |
-| Backend Service | EC2 Private Worker |
-| Cron Job / Background Job | EventBridge Scheduler |
-| Database ứng dụng | Amazon RDS PostgreSQL |
-| Xử lý lỗi | SQS Dead Letter Queue |
-| Thông báo quản trị | CloudWatch Alarm + SNS Email |
-| Application Logs | CloudWatch Logs |
-| Security Guardrails | OPA/Rego, IAM, Security Groups, VPC Endpoints |
-| Audit Trail | CloudTrail, AWS Config, VPC Flow Logs, S3 Evidence Bucket |
+## Phạm vi triển khai thực tế
 
-Luồng nghiệp vụ chính của hệ thống:
+Phiên bản lab được triển khai trong workshop sử dụng cấu hình tối ưu chi phí gồm:
+
+- 1 EC2 Worker trong private subnet;
+- 1 Amazon RDS PostgreSQL Single-AZ;
+- 1 Amazon SQS Processing Queue;
+- 1 SQS Dead Letter Queue;
+- Amazon EventBridge để tạo scheduled jobs;
+- Amazon CloudWatch để ghi log, thu thập metrics và tạo alarm;
+- Amazon SNS để gửi email cảnh báo;
+- CloudTrail, AWS Config, VPC Flow Logs và S3 để hỗ trợ audit evidence;
+- VPC Endpoints để hỗ trợ truy cập private tới các AWS services cần thiết;
+- AWS Systems Manager Session Manager để quản trị EC2 thay cho SSH public.
+
+Cấu hình này phản ánh đúng nguyên tắc của project: **triển khai thực tế đến đâu, mô tả và chứng minh đến đó**. Vì vậy, workshop không mô tả hệ thống như một kiến trúc Multi-AZ production đầy đủ, mà tập trung vào phiên bản lab đã được triển khai thật trên AWS.
+
+Trong Terraform code và tên một số tài nguyên AWS có thể vẫn xuất hiện các tiền tố như `mvp`, `stage1` hoặc `private-by-default`. Đây là các định danh kỹ thuật được dùng trong quá trình triển khai. Tên chính thức của project trong báo cáo là:
+
+**Secure Internal Job Processing Platform on AWS**
+
+---
+
+## Lý do sử dụng cấu hình 1 EC2 và 1 RDS Single-AZ
+
+Workshop triển khai 1 EC2 Worker và 1 RDS PostgreSQL Single-AZ nhằm kiểm soát chi phí trong phạm vi thực tập, với ngân sách ước tính khoảng **85–95 USD/tháng nếu chạy 24/7**.
+
+Việc sử dụng Single-AZ trong lab không có nghĩa là hệ thống không có khả năng mở rộng. Thiết kế vẫn giữ hai cơ chế quan trọng:
+
+Thứ nhất, hệ thống sử dụng **Amazon SQS** để tách rời job producer và worker. EventBridge gửi job vào SQS, còn EC2 Worker chủ động poll message để xử lý. Nếu worker tạm thời dừng hoặc restart, các message chưa xử lý vẫn có thể được giữ trong queue theo cấu hình retention của SQS.
+
+Thứ hai, toàn bộ hạ tầng được quản lý bằng **Terraform modules**. Khi cần nâng cấp lên môi trường production, có thể mở rộng thêm worker hoặc bật Multi-AZ cho RDS thông qua thay đổi cấu hình IaC thay vì thao tác thủ công trên AWS Console.
+
+Do đó, workshop không cố chứng minh high availability bằng cách tạo nhiều tài nguyên đắt tiền trong lab. Trọng tâm của workshop là chứng minh một baseline backend an toàn, có queue bảo vệ workload, có monitoring/alerting, có audit evidence và có khả năng mở rộng bằng Infrastructure as Code.
+
+---
+
+## Luồng nghiệp vụ được kiểm chứng
+
+Luồng runtime chính được kiểm chứng trong workshop là:
 
 ```text
-Business Job hoặc Scheduled Task
-→ EventBridge Scheduler hoặc gửi thủ công vào SQS
+EventBridge
 → Amazon SQS Processing Queue
-→ EC2 Private Worker trong Private Subnet
-→ Xử lý dữ liệu và ghi kết quả vào Amazon RDS PostgreSQL
-→ CloudWatch Logs, DLQ và SNS Email nếu xảy ra lỗi
-```
-
-Ý tưởng bảo mật cốt lõi của kiến trúc là **Private-by-Default**.
-
-Worker và Database không được công khai ra Internet.
-
-Hệ thống không sử dụng:
-
-- Public SSH
-- Public Database Endpoint
-- Public Application URL
-
-Toàn bộ việc quản trị EC2 được thực hiện thông qua AWS Systems Manager Session Manager.
-
-![Final architecture diagram](/images/5-Workshop/private-by-default/00-final-architecture-diagram.png)
-
-{{% notice info %}}
-Trong Terraform code và tên các tài nguyên AWS có thể vẫn xuất hiện các tiền tố như `mvp` hoặc `stage1` vì đây là các định danh môi trường kỹ thuật được sử dụng trong quá trình triển khai.
-
-Tên chính thức của dự án trong báo cáo là:
-
-**Private-by-Default AWS Workload Platform**
-{{% /notice %}}
-
-## Bài toán thực tế mà dự án giải quyết
-
-Nhiều doanh nghiệp hiện nay cần xử lý dữ liệu nội bộ nhạy cảm nhưng vẫn muốn tận dụng lợi ích của điện toán đám mây.
-
-Ví dụ:
-
-- Ngân hàng xử lý batch giao dịch
-- Công ty bảo hiểm xác thực hồ sơ khách hàng
-- Bệnh viện xử lý dữ liệu bệnh án
-- Doanh nghiệp logistics xử lý dữ liệu vận chuyển
-
-Trong các trường hợp này, việc đặt Worker hoặc Database công khai trên Internet làm tăng đáng kể bề mặt tấn công và rủi ro bảo mật.
-
-Dự án này giải quyết bài toán đó bằng cách:
-
-- Đặt Worker trong Private Subnet
-- Đặt PostgreSQL trong Private Subnet
-- Sử dụng VPC Endpoints thay cho Internet Gateway
-- Sử dụng Session Manager thay cho SSH
-- Mã hóa dữ liệu bằng AWS KMS
-- Áp dụng nguyên tắc Least Privilege thông qua IAM
-- Giám sát bằng CloudWatch
-- Ghi nhận audit evidence bằng CloudTrail và AWS Config
-- Kiểm soát thay đổi hạ tầng bằng Terraform và OPA/Rego
-
-Kiến trúc này cho phép xử lý dữ liệu nội bộ trong môi trường mạng riêng nhưng vẫn duy trì khả năng quan sát (observability), khả năng kiểm toán (auditability) và khả năng vận hành (operability).
-
-## Luồng dữ liệu đầu vào (Input)
-
-Dữ liệu đầu vào của hệ thống là các business processing jobs.
-
-Ví dụ:
-
-- Validate dữ liệu CSV
-- Kiểm tra batch giao dịch
-- Xử lý tác vụ compliance
-- Tạo audit evidence
-- Đồng bộ dữ liệu nội bộ
-
-Trong môi trường demo của workshop, dữ liệu đầu vào được tạo theo hai cách:
-
-### Cách 1: Gửi thủ công vào SQS
-
-Người vận hành gửi message trực tiếp vào Amazon SQS Processing Queue.
-
-```text
-Operator
-→ Amazon SQS
-→ Worker
-```
-
-### Cách 2: EventBridge Scheduler
-
-EventBridge Scheduler định kỳ tạo message và gửi vào SQS.
-
-```text
-EventBridge Scheduler
-→ Amazon SQS
-→ Worker
-```
-
-Trong môi trường thực tế, dữ liệu đầu vào có thể đến từ:
-
-- Internal APIs
-- ERP Systems
-- CRM Systems
-- Batch Files
-- Data Pipelines
-- Event-driven Applications
-
-## Luồng xử lý (Processing)
-
-Sau khi nhận được message từ SQS:
-
-1. Worker poll message từ Processing Queue
-2. Worker xử lý business logic
-3. Worker ghi log vào CloudWatch Logs
-4. Worker ghi kết quả vào PostgreSQL
-5. Worker xác nhận hoàn thành message
-
-Nếu quá trình xử lý thất bại:
-
-1. Message được retry
-2. Sau khi vượt ngưỡng retry
-3. Message được chuyển sang Dead Letter Queue (DLQ)
-4. CloudWatch Alarm được kích hoạt
-5. SNS gửi email cảnh báo
-
-Luồng lỗi:
-
-```text
-SQS Processing Queue
-→ Worker Failure
-→ Retry
-→ Dead Letter Queue
-→ CloudWatch Alarm
-→ SNS Email Notification
-```
-
-## Luồng đầu ra (Output)
-
-Sau khi xử lý thành công:
-
-### Kết quả nghiệp vụ
-
-Kết quả được lưu vào:
-
-- Amazon RDS PostgreSQL
-
-### Dữ liệu giám sát
-
-Logs và metrics được lưu trong:
-
-- Amazon CloudWatch Logs
-- Amazon CloudWatch Metrics
-
-### Dữ liệu kiểm toán
-
-Audit evidence được lưu thông qua:
-
-- AWS CloudTrail
-- AWS Config
-- VPC Flow Logs
-- S3 Evidence Bucket
-
-### Cảnh báo vận hành
-
-Khi có lỗi hoặc bất thường:
-
-- CloudWatch Alarm được kích hoạt
-- SNS gửi email cho người vận hành
-
-## Các thành phần bảo mật chính
-
-Kiến trúc này sử dụng nhiều lớp bảo vệ khác nhau:
-
-### Network Isolation
-
-- VPC riêng biệt
-- Private Subnets
-- Security Groups
-- VPC Endpoints
-
-### Identity and Access Management
-
-- IAM Roles
-- IAM Policies
-- Least Privilege Access
-
-### Encryption
-
-- AWS KMS
-- Encryption at Rest
-- Encryption in Transit
-
-### Secure Administration
-
-- AWS Systems Manager Session Manager
-- Không sử dụng SSH Public Access
-
-### Audit and Compliance
-
-- CloudTrail
-- AWS Config
-- VPC Flow Logs
-
-### Policy as Code
-
-- Terraform
-- OPA/Rego Policy Validation
-
-## Kết quả cuối cùng
-
-Sau khi hoàn thành workshop, người thực hiện sẽ có một hệ thống AWS đang hoạt động và chứng minh được các yêu cầu sau:
-
-1. Terraform triển khai toàn bộ hạ tầng AWS từ đầu đến cuối.
-2. OPA/Rego kiểm tra Terraform Plan trước khi triển khai.
-3. Amazon SQS nhận và lưu business jobs.
-4. EC2 Private Worker nhận và xử lý jobs từ SQS.
-5. Worker và PostgreSQL không bị public ra Internet.
-6. Các tác vụ lỗi được cô lập trong Dead Letter Queue.
-7. CloudWatch Alarm có thể gửi SNS Email Notification.
-8. Audit evidence được tạo và lưu trữ.
-9. Hệ thống có thể được dọn dẹp hoàn toàn để tránh phát sinh chi phí AWS không cần thiết.
-
-## Vai trò của phần Evidence
-
-Các ảnh chụp màn hình trong mục 5.6 đóng vai trò là bằng chứng triển khai và vận hành.
-
-Mục tiêu chính của workshop không phải là trình diễn giao diện AWS Console mà là chứng minh:
-
-- Hạ tầng đã được triển khai thành công
-- Luồng nghiệp vụ hoạt động đúng
-- Cơ chế bảo mật được áp dụng
-- Cảnh báo được gửi thành công
-- Audit evidence được tạo ra
-
-Do đó workshop tập trung vào:
-
-1. Chuẩn bị môi trường
-2. Sinh source code
-3. Triển khai hạ tầng
-4. Kiểm tra luồng nghiệp vụ
-5. Thu thập bằng chứng
-6. Tối ưu chi phí
-7. Dọn dẹp tài nguyên AWS
-
-để người đọc có thể tái tạo toàn bộ hệ thống một cách nhanh chóng và chính xác.
+→ EC2 Private Worker
+→ Processing Log
+→ CloudWatch / DLQ / SNS Alert

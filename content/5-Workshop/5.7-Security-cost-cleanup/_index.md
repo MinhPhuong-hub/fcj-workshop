@@ -1,121 +1,81 @@
 ---
-title: "Security, cost control, and cleanup"
+title: "Security, Cost Optimization and Cleanup"
 date: 2026-07-04
 weight: 7
 chapter: false
 pre: " <b> 5.7. </b> "
 ---
 
-# Security controls implemented
+# Security Controls Implemented
+
+The workshop implements multiple layers of security controls to ensure that the internal backend workload is not directly exposed to the public Internet, while still maintaining administration, monitoring, and auditability after deployment.
+
+The main security controls include:
 
 ~~~text
 No public EC2 IP
-No SSH key pair
+No SSH key pair for EC2 administration
 No public SSH/RDP ingress
-SSM Session Manager for administration
+AWS Systems Manager Session Manager for EC2 access
 Private RDS PostgreSQL
-RDS storage encrypted with KMS
-EC2 root EBS encrypted with KMS
-S3 evidence bucket encrypted
+RDS public access disabled
+RDS access restricted by Security Group
+RDS storage encrypted with AWS KMS
+EC2 root EBS encryption
+S3 evidence/log bucket encryption
 VPC Endpoints for private AWS service access
-SQS Processing Queue and DLQ
-CloudWatch Alarm to SNS Email
-CloudTrail, AWS Config, VPC Flow Logs
-OPA/Rego gate before Terraform apply
+SQS Processing Queue and Dead Letter Queue
+CloudWatch Alarm integrated with SNS Email
+CloudTrail for API activity logging
+AWS Config for resource configuration tracking
+VPC Flow Logs for network traffic metadata
+Terraform for Infrastructure as Code
+OPA/Rego policy gate before Terraform apply
 ~~~
 
-# Cost controls
+These controls support three main objectives:
+
+1. **Reducing public exposure:** The EC2 Worker has no public IP address, public SSH is not used, and RDS is not publicly accessible.
+2. **Improving secure operations:** EC2 administration is performed through Session Manager, jobs are processed through SQS, and failed jobs are isolated in the Dead Letter Queue.
+3. **Generating audit evidence:** CloudTrail, AWS Config, VPC Flow Logs, CloudWatch, and S3 provide evidence for post-deployment review.
+
+# Cost Controls
+
+The lab version is designed with cost control in mind. It does not over-provision resources beyond what is required to prove the project scope.
+
+The main cost controls include:
 
 ~~~text
-Default cost path: Single-AZ RDS; optional diagram-aligned path: Multi-AZ primary/standby
-One EC2 worker for demo instead of autoscaling fleet
+One EC2 Worker for lab deployment
+Single-AZ RDS PostgreSQL for cost control
 No NAT Gateway
 No public load balancer
-Short CloudWatch log retention
-Terraform destroy after evidence is captured
+VPC Endpoints used only for required AWS services
+SQS and EventBridge used at low demo traffic volume
+CloudWatch log retention kept short for lab usage
+Terraform destroy after evidence collection
 ~~~
 
-The main cost drivers are RDS, EC2, VPC Interface Endpoints, KMS, CloudWatch Alarms, and S3. Do not leave the environment running after the report screenshots are complete.
+The resources that can easily generate ongoing cost if left running include:
 
-A quick estimate for keeping the default configuration running 24/7 for one month in `us-east-1` is approximately **85–95 USD/month**. If RDS Multi-AZ is enabled to match the primary/standby database tier in the diagram, reserve approximately **105–125 USD/month**. This estimate excludes tax, does not rely on the Free Tier, and should be validated with AWS Pricing Calculator before real operation.
+- Amazon EC2;
+- Amazon RDS PostgreSQL;
+- VPC Interface Endpoints;
+- AWS KMS;
+- CloudWatch Logs, Metrics, and Alarms;
+- AWS Config;
+- VPC Flow Logs;
+- S3 storage.
 
-# Optional: enable RDS Multi-AZ to match the database tier in the diagram
+Because the project uses hourly billed resources such as EC2, RDS, and VPC Interface Endpoints, cleanup is a mandatory step after evidence collection.
 
-The diagram has two RDS icons. The correct interpretation is **RDS PostgreSQL primary/standby** across private DB subnets. The default workshop path uses a cost-controlled configuration. Run this optional step only when the database tier must match the diagram exactly or when you want to simulate a production HA pattern.
-
-Run in Windows PowerShell:
-
-~~~powershell
-cd D:\mvp_private_by_default_architecture
-code infra\modules\database\main.tf
-~~~
-
-In `infra\modules\database\main.tf`, find:
-
-~~~hcl
-multi_az = false
-~~~
-
-Change it to:
-
-~~~hcl
-multi_az = true
-~~~
-
-Then open the OPA policy:
-
-~~~powershell
-code policy\terraform\database_invariants.rego
-~~~
-
-Find the rule that blocks Multi-AZ for cost control:
-
-~~~rego
-deny contains msg if {
-  rc := input.resource_changes[_]
-  rc.type == "aws_db_instance"
-  after := rc.change.after
-  after.multi_az == true
-  msg := sprintf("Stage 1 uses Single-AZ RDS for cost control: %s", [rc.address])
-}
-~~~
-
-Replace it with the rule that requires Multi-AZ for the primary/standby architecture:
-
-~~~rego
-deny contains msg if {
-  rc := input.resource_changes[_]
-  rc.type == "aws_db_instance"
-  after := rc.change.after
-  after.multi_az != true
-  msg := sprintf("RDS instance must use Multi-AZ for primary/standby HA: %s", [rc.address])
-}
-~~~
-
-Deploy again:
-
-~~~powershell
-cd D:\mvp_private_by_default_architecture\infra\envs\mvp
-terraform fmt -recursive
-terraform validate
-terraform plan -out tfplan.binary
-terraform show -json tfplan.binary > tfplan.json
-opa eval -f pretty -d ..\..\..\policy\terraform -i tfplan.json "data.terraform.deny"
-terraform apply tfplan.binary
-~~~
-
-Expected OPA result must still be:
-
-~~~text
-[]
-~~~
-
-Cost note: Multi-AZ RDS costs more than Single-AZ and takes longer to create or update. For a fast demo, keep Single-AZ. For a proposal/diagram-aligned HA database tier, enable Multi-AZ.
-
+The estimated cost for the lab configuration, if running continuously 24/7 in `us-east-1`, is approximately **85–95 USD/month**. During the actual demo, the cost can be much lower because the infrastructure is deployed temporarily, validated, documented with screenshots, and then destroyed.
 
 # Cleanup
 
-Run in Windows PowerShell:
+After collecting enough evidence for the report, the infrastructure should be destroyed using Terraform to avoid unnecessary AWS charges.
+
+Run the following commands in Windows PowerShell:
 
 ~~~powershell
 cd D:\mvp_private_by_default_architecture
@@ -131,21 +91,50 @@ When Terraform asks for confirmation, type:
 yes
 ~~~
 
-Expected result:
+The expected result is:
 
 ~~~text
 Destroy complete!
 ~~~
 
-# Post-cleanup check
+# Post-Cleanup Verification
 
-Open AWS Console and verify that EC2 worker, RDS database, SQS queues, VPC Endpoints, SNS topic, EventBridge schedule, and CloudWatch Alarm were removed. KMS keys may remain in scheduled deletion state for the configured deletion window.
-# Workshop conclusion
+After Terraform destroy is completed, the AWS Console should be checked to confirm that the main resources have been removed.
 
-This workshop demonstrated the complete implementation lifecycle of the Private-by-Default AWS Workload Platform.
+The resources to verify include:
 
-The deployment process included infrastructure provisioning with Terraform, policy validation with OPA/Rego, workload deployment into private AWS networking, business-flow validation through EventBridge Scheduler and Amazon SQS, operational monitoring with CloudWatch and SNS, evidence collection, and final resource cleanup.
+- EC2 Worker;
+- RDS PostgreSQL database;
+- SQS Processing Queue;
+- SQS Dead Letter Queue;
+- EventBridge schedule;
+- SNS topic and email subscription;
+- CloudWatch Alarms;
+- VPC Endpoints;
+- S3 evidence/log bucket;
+- CloudTrail;
+- AWS Config;
+- VPC Flow Logs.
 
-The resulting platform operates without Internet Gateway, NAT Gateway, bastion hosts, or public IP addresses while still maintaining administrative access through AWS Systems Manager Session Manager and AWS Private Endpoints.
+Some resources such as KMS keys may not be deleted immediately. They may enter a scheduled deletion state according to the configured deletion window. This is normal AWS KMS behavior.
 
-The implementation validates that secure, auditable, and operationally manageable workloads can be deployed on AWS using a private-by-default architecture.
+If AWS Billing still shows unexpected cost after cleanup, the common resources to check are RDS snapshots, NAT Gateway, VPC Endpoints, CloudWatch Logs, AWS Config Recorder, S3 buckets, and KMS keys.
+
+# Workshop Chapter Conclusion
+
+The Workshop chapter has presented the full deployment lifecycle of **Secure Internal Job Processing Platform on AWS**.
+
+The implementation process includes:
+
+1. preparing the local environment and AWS access;
+2. building the infrastructure using Terraform;
+3. validating the Terraform plan using OPA/Rego;
+4. deploying the workload in a private-first AWS environment;
+5. validating the job-processing flow through EventBridge, Amazon SQS, and the EC2 Worker;
+6. monitoring the system using CloudWatch and SNS;
+7. collecting security, operational, and audit evidence;
+8. cleaning up AWS resources to control cost.
+
+The deployment results prove that the project does not stop at an architecture diagram. The system was actually deployed on AWS, with a worker and database that are not publicly exposed to the Internet, a queue-based asynchronous job-processing flow, a Dead Letter Queue for failed-job isolation, CloudWatch/SNS for alerting, CloudTrail/AWS Config/VPC Flow Logs for audit support, and Terraform/OPA for infrastructure control through code.
+
+In other words, the workshop demonstrates that an internal backend workload on AWS can be deployed in a secure, verifiable, and cost-controlled manner, with a clear cleanup process after the demo is completed.
