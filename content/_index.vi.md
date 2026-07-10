@@ -25,7 +25,9 @@ chapter: false
 
 &emsp; **Thời gian thực tập:** Từ ngày 17/04/2026 đến ngày 10/7/2026
 
-![Ảnh đại diện của bạn](/images/avatar.png)
+<p align="center">
+    <img src="/fcj-workshop/images/avata.jpg" alt="Avatar" width="250">
+</p>
 
 
 

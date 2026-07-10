@@ -309,6 +309,6 @@ This model enhances security, optimizes performance, efficiently manages caching
 
 <h2 style="text-align:center;">Architecture Diagram</h2>
 
-![Photo](/images/3-Blog/diagram1.jpg)
+![Photo](/fcj-workshop/images/3-Blog/diagram1.jpg)
 
 **Article Link** : https://www.facebook.com/groups/awsstudygroupfcj/permalink/2180621306036163

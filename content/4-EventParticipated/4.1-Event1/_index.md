@@ -1,126 +1,141 @@
 ---
 title: "Event 1"
-date: 2024-01-01
+date: 2026-05-09
 weight: 1
 chapter: false
 pre: " <b> 4.1. </b> "
 ---
 
-{{% notice warning %}}
-⚠️ **Note:** The information below is for reference purposes only. Please **do not copy it verbatim** into your report, including this warning.
-{{% /notice %}}
+# Event Report – "FCAJ HCM Knowledge Sharing"
 
-# Summary Report: “GenAI-powered App-DB Modernization workshop”
+## Event Purpose
 
-### Event Objectives
+This knowledge-sharing session was organized by the First Cloud Journey community to provide members with practical experiences, effective learning methods, and insights into applying AI technologies in software engineering.
 
-- Share best practices in modern application design
-- Introduce Domain-Driven Design (DDD) and event-driven architecture
-- Provide guidance on selecting the right compute services
-- Present AI tools to support the development lifecycle
+The event focused not only on technical knowledge but also on developing a continuous learning mindset and improving problem-solving approaches in real-world projects.
 
-### Speakers
+---
 
-- **Jignesh Shah** – Director, Open Source Databases
-- **Erica Liu** – Sr. GTM Specialist, AppMod
-- **Fabrianne Effendi** – Assc. Specialist SA, Serverless Amazon Web Services
+## Speakers
 
-### Key Highlights
+- **Hoàng Long** – Ambassador, First Cloud Journey
+- **Thịnh Nguyễn** – DevOps/Cloud Engineer, First Cloud Journey
+- **Khang Nguyễn** – Solutions Architect, Cloud Kinetics Vietnam
+- **Nguyễn Phương** – Global Engineer, VIB
 
-#### Identifying the drawbacks of legacy application architecture
+---
 
-- Long product release cycles → Lost revenue/missed opportunities  
-- Inefficient operations → Reduced productivity, higher costs  
-- Non-compliance with security regulations → Security breaches, loss of reputation  
+## Key Topics
 
-#### Transitioning to modern application architecture – Microservices
+### 1. Effective Learning Strategies
 
-Migrating to a modular system — each function is an **independent service** communicating via **events**, built on three core pillars:
+The speakers shared practical approaches for continuous self-learning in the IT industry, emphasizing:
 
-- **Queue Management**: Handle asynchronous tasks  
-- **Caching Strategy**: Optimize performance  
-- **Message Handling**: Flexible inter-service communication  
+- Building a structured learning roadmap
+- Focusing on understanding concepts instead of memorization
+- Developing long-term technical thinking
+- Applying newly acquired knowledge through real projects
 
-#### Domain-Driven Design (DDD)
+---
 
-- **Four-step method**: Identify domain events → arrange timeline → identify actors → define bounded contexts  
-- **Bookstore case study**: Demonstrates real-world DDD application  
-- **Context mapping**: 7 patterns for integrating bounded contexts  
+### 2. AI Prompt Engineering
 
-#### Event-Driven Architecture
+A significant part of the session introduced modern prompting techniques for working with AI assistants.
 
-- **3 integration patterns**: Publish/Subscribe, Point-to-point, Streaming  
-- **Benefits**: Loose coupling, scalability, resilience  
-- **Sync vs async comparison**: Understanding the trade-offs  
+Topics included:
 
-#### Compute Evolution
+- Chain-of-Thought Prompting
+- Self-Consistency
+- Tree-of-Thoughts
+- Retrieval-Augmented Generation (RAG)
+- Role Prompting
 
-- **Shared Responsibility Model**: EC2 → ECS → Fargate → Lambda  
-- **Serverless benefits**: No server management, auto-scaling, pay-for-value  
-- **Functions vs Containers**: Criteria for appropriate choice  
+The presenters explained how selecting the appropriate prompting technique can significantly improve AI-generated responses and overall productivity.
 
-#### Amazon Q Developer
+---
 
-- **SDLC automation**: From planning to maintenance  
-- **Code transformation**: Java upgrade, .NET modernization  
-- **AWS Transform agents**: VMware, Mainframe, .NET migration  
+### 3. Developing a Job-Ready Mindset
 
-### Key Takeaways
+The speakers emphasized that technical knowledge alone is not sufficient for career growth.
 
-#### Design Mindset
+Important aspects include:
 
-- **Business-first approach**: Always start from the business domain, not the technology  
-- **Ubiquitous language**: Importance of a shared vocabulary between business and tech teams  
-- **Bounded contexts**: Identifying and managing complexity in large systems  
+- Continuous learning
+- Critical thinking
+- Communication skills
+- Problem-solving abilities
+- Adapting to rapidly evolving technologies
 
-#### Technical Architecture
+---
 
-- **Event storming technique**: Practical method for modeling business processes  
-- Use **event-driven communication** instead of synchronous calls  
-- **Integration patterns**: When to use sync, async, pub/sub, streaming  
-- **Compute spectrum**: Criteria for choosing between VM, containers, and serverless  
+### 4. BMAD Method
 
-#### Modernization Strategy
+The event introduced the BMAD framework, which structures software development into specialized AI-assisted roles such as Business Analyst, Architect, Developer, and QA.
 
-- **Phased approach**: No rushing — follow a clear roadmap  
-- **7Rs framework**: Multiple modernization paths depending on the application  
-- **ROI measurement**: Cost reduction + business agility  
+This approach helps teams organize software development more effectively while improving collaboration and productivity.
 
-### Applying to Work
+---
 
-- **Apply DDD** to current projects: Event storming sessions with business teams  
-- **Refactor microservices**: Use bounded contexts to define service boundaries  
-- **Implement event-driven patterns**: Replace some sync calls with async messaging  
-- **Adopt serverless**: Pilot AWS Lambda for suitable use cases  
-- **Try Amazon Q Developer**: Integrate into the dev workflow to boost productivity  
+## What I Learned
 
-### Event Experience
+### Effective Learning Methods
 
-Attending the **“GenAI-powered App-DB Modernization”** workshop was extremely valuable, giving me a comprehensive view of modernizing applications and databases using advanced methods and tools. Key experiences included:
+One important takeaway was the importance of creating a clear learning roadmap and continuously practicing instead of only consuming theoretical materials.
 
-#### Learning from highly skilled speakers
-- Experts from AWS and major tech organizations shared **best practices** in modern application design.  
-- Through real-world case studies, I gained a deeper understanding of applying **DDD** and **Event-Driven Architecture** to large projects.  
+---
 
-#### Hands-on technical exposure
-- Participating in **event storming** sessions helped me visualize how to **model business processes** into domain events.  
-- Learned how to **split microservices** and define **bounded contexts** to manage large-system complexity.  
-- Understood trade-offs between **synchronous and asynchronous communication** and integration patterns like **pub/sub, point-to-point, streaming**.  
+### Improving AI Prompting Skills
 
-#### Leveraging modern tools
-- Explored **Amazon Q Developer**, an AI tool for SDLC support from planning to maintenance.  
-- Learned to **automate code transformation** and pilot serverless with **AWS Lambda** to improve productivity.  
+I learned several advanced prompting techniques that can produce more accurate and higher-quality AI responses depending on different scenarios.
 
-#### Networking and discussions
-- The workshop offered opportunities to exchange ideas with experts, peers, and business teams, enhancing the **ubiquitous language** between business and tech.  
-- Real-world examples reinforced the importance of the **business-first approach** rather than focusing solely on technology.  
+These techniques can significantly improve efficiency when using AI tools during software development.
 
-#### Lessons learned
-- Applying DDD and event-driven patterns reduces **coupling** while improving **scalability** and **resilience**.  
-- Modernization requires a **phased approach** with **ROI measurement**; rushing the process can be risky.  
-- AI tools like Amazon Q Developer can significantly **boost productivity** when integrated into the current workflow.  
+---
 
-#### Some event photos
-*Add your event photos here*  
+### Strengthening Critical Thinking
 
-> Overall, the event not only provided technical knowledge but also helped me reshape my thinking about application design, system modernization, and cross-team collaboration.
+The session highlighted that learning should always be accompanied by analytical thinking and practical application.
+
+Instead of simply collecting information, it is essential to understand why a solution works and how it can be adapted to different situations.
+
+---
+
+### Understanding the BMAD Framework
+
+The BMAD framework demonstrated how AI can assist throughout the software development lifecycle while maintaining a structured workflow across different engineering roles.
+
+---
+
+## Applying the Knowledge
+
+After attending this event, I identified several practical improvements that can be incorporated into my daily learning and development process.
+
+These include:
+
+- Creating a structured personal learning roadmap
+- Applying advanced prompt engineering techniques when working with AI assistants
+- Using AI as a productivity tool instead of relying on it blindly
+- Continuously practicing by implementing newly learned concepts in personal projects
+- Improving analytical thinking before searching for ready-made solutions
+
+---
+
+## Personal Experience
+
+Participating in the **"FCAJ HCM Knowledge Sharing"** event was a valuable experience.
+
+The speakers shared practical knowledge rather than purely theoretical concepts, making the session highly engaging and easy to follow.
+
+I particularly appreciated the discussion about Prompt Engineering because it introduced several techniques that I had not previously explored in depth.
+
+The event also provided an opportunity to interact with community members who share similar interests in AWS, Cloud Computing, Artificial Intelligence, and Software Engineering.
+
+Overall, the session encouraged me to adopt a more disciplined learning approach and continuously improve both my technical and problem-solving skills.
+
+---
+
+## Event Photo
+
+![Image](/fcj-workshop/images/4-Event/event1,1.jpg) 
+
+<!-- Add additional images here if needed -->
