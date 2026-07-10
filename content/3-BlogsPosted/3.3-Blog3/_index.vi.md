@@ -111,6 +111,6 @@ Hệ thống quản lý đơn hàng theo kiến trúc event-driven là một bà
 
 <h2 style="text-align:center;">Sơ đồ kiến trúc đề xuất</h2>
 
-![Photo](/fcj-workshop/images/3-Blog/diagram3.jpg)
+![Photo](/images/3-Blog/diagram3.jpg)
 
 **Link bài viết tham khảo** : https://www.facebook.com/groups/awsstudygroupfcj/permalink/2201747483923545
