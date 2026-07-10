@@ -111,6 +111,6 @@ An event-driven order processing system is an exceptional learning vehicle for p
 
 <h2 style="text-align:center;">Proposed Architecture Diagram</h2>
 
-![Photo](/images/3-Blog/diagram3.jpg)
+![Photo](/fcj-workshop/images/3-Blog/diagram3.jpg)
 
 **Reference Article Link** : https://www.facebook.com/groups/awsstudygroupfcj/permalink/2201747483923545
