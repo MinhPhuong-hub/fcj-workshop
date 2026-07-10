@@ -6,9 +6,9 @@ pre: "<b>6. </b>"
 slug: "6-self-rating"
 ---
 
-# Self Assessment
 
-During the internship period from **17/04/2026 to 06/07/2026**, I focused on building a Cloud foundation in the direction of **Cloud Security / Infrastructure Architect**. My 12-week worklog covered AWS Free Tier, IAM, VPC, EC2, RDS, Auto Scaling, CloudWatch, Cost Management, Infrastructure as Code, and then moved into the final proposal, AWS diagram correction, and project implementation.
+
+During the internship period from **17/4/2026 to 10/07/2026**, I focused on building a Cloud foundation in the direction of **Cloud Security / Infrastructure Architect**. My 12-week worklog covered AWS Free Tier, IAM, VPC, EC2, RDS, Auto Scaling, CloudWatch, Cost Management, Infrastructure as Code, and then moved into the final proposal, AWS diagram correction, and project implementation.
 
 At the beginning, I still had difficulty connecting individual AWS services into a complete architecture. I could understand each service separately, but I was not fully confident explaining why a workload needed private subnets, IAM roles, security groups, VPC endpoints, monitoring, and operational evidence. After the internship, I improved my ability to read official documentation, compare it with AWS Study Group labs, maintain weekly worklogs, and convert separate technical concepts into a purposeful architecture design.
 

@@ -6,7 +6,7 @@ pre: "<b>7. </b>"
 slug: "7-feedback"
 ---
 
-# Chia sẻ, đóng góp ý kiến
+
 
 ## Đánh giá chung
 
@@ -82,14 +82,11 @@ Em cũng hài lòng vì bản thân đã cải thiện khả năng tự học. T
 
 ### Điều bạn nghĩ công ty cần cải thiện cho các thực tập sinh sau?
 
-Theo em, chương trình đã có nền tảng tốt. Tuy nhiên, để các bạn thực tập sinh sau học hiệu quả hơn, em có một số góp ý:
+Theo em, chương trình thực tập đã được tổ chức rất tốt, lộ trình học rõ ràng và các tài liệu hướng dẫn đầy đủ. Trong quá trình thực tập, em không gặp khó khăn lớn về nội dung hay tài nguyên học tập.
 
-* Nên có checklist rõ hơn cho từng mốc nộp: worklog, proposal, diagram, project và self-assessment.
-* Nên có một buổi review AWS diagram ở giữa kỳ hoặc trước tuần cuối để tránh sửa lỗi kiến trúc quá muộn.
-* Nên có ví dụ ngắn về một project đạt yêu cầu: có problem statement, business/action flow, diagram, evidence và cleanup.
-* Nên ghim các thông báo quan trọng về deadline, format nộp bài và yêu cầu song ngữ để tránh thực tập sinh bỏ sót.
+Nếu có thêm một đề xuất nhỏ, em mong công ty có thể chia sẻ thêm một số kinh nghiệm thực tế từ các dự án đang triển khai hoặc tổ chức các buổi chia sẻ ngắn về quy trình làm việc của đội ngũ kỹ sư. Điều này sẽ giúp thực tập sinh hiểu rõ hơn cách áp dụng kiến thức AWS vào môi trường doanh nghiệp thực tế.
 
-Những điểm này không làm thay đổi cấu trúc chương trình, nhưng sẽ giúp thực tập sinh mới giảm nhầm lẫn và tập trung nhiều hơn vào chất lượng kỹ thuật.
+Ngoài ra, em hy vọng công ty sẽ tiếp tục duy trì chương trình thực tập để tạo cơ hội cho nhiều sinh viên được học tập và trải nghiệm.
 
 ### Nếu giới thiệu cho bạn bè, bạn có khuyên họ thực tập ở đây không? Vì sao?
 
