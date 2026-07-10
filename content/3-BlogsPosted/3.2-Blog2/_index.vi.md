@@ -157,7 +157,7 @@ Mô hình này giúp người học bước ra khỏi tư duy của một "demo 
 
 <h2 style="text-align:center;">Sơ đồ kiến trúc đề xuất</h2>
 
-![Photo](/images/5-Workshop/private-by-default/screen2,2.jpg)
+![Photo](/fcj-workshop/images/5-Workshop/private-by-default/screen2,2.jpg)
 
 
 **Link bài viết tham khảo** : https://www.facebook.com/groups/awsstudygroupfcj/permalink/2201739207257706

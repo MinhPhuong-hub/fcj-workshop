@@ -157,6 +157,6 @@ Moving past a basic "black box" chat demo teaches engineers the realities of pro
 
 <h2 style="text-align:center;">Proposed Architecture Diagram</h2>
 
-![Photo](/images/3-Blog/diagram2.jpg)
+![Photo](/fcj-workshop/images/3-Blog/diagram2.jpg)
 
 **Reference Article Link** : https://www.facebook.com/groups/awsstudygroupfcj/permalink/2201739207257706
