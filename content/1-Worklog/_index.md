@@ -7,7 +7,7 @@ pre: "<b>1. </b>"
 
 # Worklog
 
-This page summarizes the 12-week internship worklog for student 1, from **17/04/2026** to **06/07/2026**.
+This page summarizes the 12-week internship worklog for student 1, from **14/04/2026** to **10/07/2026**.
 
 The content is organized by week and follows the AWS Study Group lab roadmap, official AWS documentation, proposal completion, AWS diagram refinement, and final project implementation.
 
