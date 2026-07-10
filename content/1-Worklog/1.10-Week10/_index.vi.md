@@ -1,59 +1,39 @@
 ---
-title: "Worklog Tuần 10"
-date: 2024-01-01
-weight: 2
+title: "Worklog tuần 10"
+weight: 10
 chapter: false
-pre: " <b> 1.10. </b> "
+pre: " <b>1.10 </b> "
 ---
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
+
+# Worklog tuần 10: Chuẩn hóa nội dung Hugo workshop và chuẩn bị project cuối kỳ
+
+**Thời gian:** 15/06/2026 - 21/06/2026
+
+## Mục tiêu tuần 10
+
+- Rà soát lại folder content của workshop Hugo và phân bổ nội dung vào đúng mục.
+- Chuẩn hóa phần hướng dẫn triển khai: local setup, IAM, source code, Terraform/OPA, validate flow, evidence, cleanup.
+- Chuẩn bị đầu vào cho tuần proposal và tuần triển khai cuối.
+
+---
+
+## Các công việc cần triển khai trong tuần này
+
+| Thứ | Công việc | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu |
+|---|---|---|---|---|
+| 2 | - Kiểm tra cấu trúc content: Worklog, Proposal, BlogsPosted, EventParticipated, Workshop, Self-Assessment, Sharing-and-Feedback<br>- Ghi danh sách trang còn thiếu nội dung hoặc sai thứ tự sidebar | 15/06/2026 | 15/06/2026 | [AWS Study Group Cloud Journey](https://cloudjourney.awsstudygroup.com/vi/) |
+| 3 | - Viết nháp phần Workshop overview và local setup/IAM<br>- Đảm bảo người đọc hiểu project là internal worker, không phải web app public | 16/06/2026 | 16/06/2026 | [IAM Docs](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html)<br>[VPC Docs](https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html) |
+| 4 | - Chuẩn hóa phần source code và flow triển khai Terraform/OPA<br>- Bổ sung giải thích các file chính, biến môi trường và output cần kiểm tra | 17/06/2026 | 17/06/2026 | [CloudFormation Docs](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html)<br>[Security Pillar](https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/welcome.html) |
+| 5 | - Viết nháp phần validate business flow và mandatory evidence<br>- Gắn CloudWatch Logs/Metrics/Alarms vào tiêu chí nghiệm thu project | 18/06/2026 | 18/06/2026 | [CloudWatch Docs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html)<br>[CloudWatch Logs Docs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs.html) |
+| 6-CN | - Review toàn bộ nháp, sửa cách diễn đạt để phù hợp báo cáo thực tập<br>- Chuẩn bị danh sách việc cần làm cho tuần proposal | 19/06/2026 | 21/06/2026 | [AWS Well-Architected Framework](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html)<br>[AWS Study Group](https://cloudjourney.awsstudygroup.com/vi/) |
+
+---
+
+## Kết quả đạt được tuần 10
+
+- Xác định đúng cấu trúc nội dung Hugo cho workshop hiện tại.
+- Chuẩn hóa được các trang hướng dẫn triển khai, kiểm tra flow, evidence và cleanup.
+- Sẵn sàng chuyển sang tuần 11 để hoàn thiện proposal dựa trên nội dung workshop và phạm vi project đã chốt.
 
 
-### Mục tiêu tuần 10:
-
-* Kết nối, làm quen với các thành viên trong First Cloud AI Journey.
-* Hiểu dịch vụ AWS cơ bản, cách dùng console & CLI.
-
-### Các công việc cần triển khai trong tuần này:
-| Thứ | Công việc                                                                                                                                                                                   | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu                            |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | --------------- | ----------------------------------------- |
-| 2   | - Làm quen với các thành viên FCAJ <br> - Đọc và lưu ý các nội quy, quy định tại đơn vị thực tập                                                                                             | 11/08/2025   | 11/08/2025      |
-| 3   | - Tìm hiểu AWS và các loại dịch vụ <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                            | 12/08/2025   | 12/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Tạo AWS Free Tier account <br> - Tìm hiểu AWS Console & AWS CLI <br> - **Thực hành:** <br>&emsp; + Tạo AWS account <br>&emsp; + Cài AWS CLI & cấu hình <br> &emsp; + Cách sử dụng AWS CLI | 13/08/2025   | 13/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Tìm hiểu EC2 cơ bản: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - Các cách remote SSH vào EC2 <br> - Tìm hiểu Elastic IP   <br>                  | 14/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Thực hành:** <br>&emsp; + Tạo EC2 instance <br>&emsp; + Kết nối SSH <br>&emsp; + Gắn EBS volume                                                                                         | 15/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-
-
-### Kết quả đạt được tuần 10:
-
-* Hiểu AWS là gì và nắm được các nhóm dịch vụ cơ bản: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
-
-* Đã tạo và cấu hình AWS Free Tier account thành công.
-
-* Làm quen với AWS Management Console và biết cách tìm, truy cập, sử dụng dịch vụ từ giao diện web.
-
-* Cài đặt và cấu hình AWS CLI trên máy tính bao gồm:
-  * Access Key
-  * Secret Key
-  * Region mặc định
-  * ...
-
-* Sử dụng AWS CLI để thực hiện các thao tác cơ bản như:
-
-  * Kiểm tra thông tin tài khoản & cấu hình
-  * Lấy danh sách region
-  * Xem dịch vụ EC2
-  * Tạo và quản lý key pair
-  * Kiểm tra thông tin dịch vụ đang chạy
-  * ...
-
-* Có khả năng kết nối giữa giao diện web và CLI để quản lý tài nguyên AWS song song.
-* ...
-
-
+---

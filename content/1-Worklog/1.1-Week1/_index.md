@@ -1,57 +1,36 @@
 ---
-title: "Week 1 Worklog"
-date: 2024-01-01
+title: "Worklog week 1"
 weight: 1
 chapter: false
-pre: " <b> 1.1. </b> "
+pre: " <b>1.1 </b> "
 ---
-{{% notice warning %}} 
-⚠️ **Note:** The following information is for reference purposes only. Please **do not copy verbatim** for your own report, including this warning.
-{{% /notice %}}
 
+# Worklog Week 1: Onboarding, AWS Free Tier, and account security
 
-### Week 1 Objectives:
+**Time:** 17/04/2026 - 19/04/2026
 
-* Connect and get acquainted with members of First Cloud AI Journey.
-* Understand basic AWS services, how to use the console & CLI.
+## Week 1 objectives
 
-### Tasks to be carried out this week:
-| Day | Task                                                                                                                                                                                                   | Start Date | Completion Date | Reference Material                        |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ----------------------------------------- |
-| 2   | - Get acquainted with FCAJ members <br> - Read and take note of internship unit rules and regulations                                                                                                   | 08/11/2025 | 08/11/2025      |
-| 3   | - Learn about AWS and its types of services <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                              | 08/12/2025 | 08/12/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Create AWS Free Tier account <br> - Learn about AWS Console & AWS CLI <br> - **Practice:** <br>&emsp; + Create AWS account <br>&emsp; + Install & configure AWS CLI <br> &emsp; + How to use AWS CLI | 08/13/2025 | 08/13/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Learn basic EC2: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - SSH connection methods to EC2 <br> - Learn about Elastic IP   <br>                            | 08/14/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Practice:** <br>&emsp; + Launch an EC2 instance <br>&emsp; + Connect via SSH <br>&emsp; + Attach an EBS volume                                                                                     | 08/15/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
+- Understand the internship requirements, Hugo workshop structure, and worklog format.
+- Set up a safe AWS learning baseline: account security, MFA, billing awareness, budget, and initial access model.
+- Become familiar with the AWS Study Group lab system starting from lab 000001 and official AWS documentation.
 
+---
 
-### Week 1 Achievements:
+## Tasks to complete this week
 
-* Understood what AWS is and mastered the basic service groups: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
+| Day | Task | Start date | Completion date | References |
+|---|---|---|---|---|
+| Fri | Read the internship requirements and previous student worklog template.<br>Review the Hugo site structure: Worklog, Proposal, Blog, Event, Workshop, Self-Assessment, and Feedback. | 17/04/2026 | 17/04/2026 | [AWS Study Group Cloud Journey](https://cloudjourney.awsstudygroup.com/)<br>[AWS Free Tier Workshop](https://000001.awsstudygroup.com/)  |
+| Sat | Study AWS Free Tier, billing dashboard, credit usage, and cost-risk points.<br>Create an initial security checklist: root MFA, avoid daily root usage, and use IAM users/roles when needed. | 18/04/2026 | 18/04/2026 | [AWS Free Tier Workshop](https://000001.awsstudygroup.com/) <br>[IAM Best Practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html) |
+| Sun | Create a reference list of official sources for the internship.<br>Draft the lab roadmap: IAM, VPC, EC2, RDS, ASG, Budget, and CloudWatch. | 19/04/2026 | 19/04/2026 | [AWS Documentation](https://docs.aws.amazon.com/)<br>[AWS Study Group Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
 
-* Successfully created and configured an AWS Free Tier account.
+---
 
-* Became familiar with the AWS Management Console and learned how to find, access, and use services via the web interface.
+## Week 1 outcomes
 
-* Installed and configured AWS CLI on the computer, including:
-  * Access Key
-  * Secret Key
-  * Default Region
-  * ...
+- Understood the required worklog format: weekly goals, daily task table, references, and outcomes.
+- Established safe AWS study rules: MFA, budget monitoring, and no daily root usage.
+- Defined the lab sequence that supports the final project: identity → network → compute/database → monitoring/cost → proposal/project.
 
-* Used AWS CLI to perform basic operations such as:
-
-  * Check account & configuration information
-  * Retrieve the list of regions
-  * View EC2 service
-  * Create and manage key pairs
-  * Check information about running services
-  * ...
-
-* Acquired the ability to connect between the web interface and CLI to manage AWS resources in parallel.
-* ...
+---

@@ -1,59 +1,37 @@
 ---
-title: "Worklog Tuần 1"
-date: 2024-01-01
+title: "Worklog tuần 1"
 weight: 1
 chapter: false
-pre: " <b> 1.1. </b> "
+pre: " <b>1.1 </b> "
 ---
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
+
+# Worklog tuần 1: Onboarding, AWS Free Tier và bảo mật tài khoản
+
+**Thời gian:** 17/04/2026 - 19/04/2026
+
+## Mục tiêu tuần 1
+
+- Nắm yêu cầu thực tập, cấu trúc workshop Hugo và quy định ghi worklog.
+- Thiết lập nền tảng sử dụng AWS an toàn: account, MFA, billing, budget và phân quyền ban đầu.
+- Làm quen hệ thống lab AWS Study Group từ mã 000001 và tài liệu AWS chính thống.
+
+---
+
+## Các công việc cần triển khai trong tuần này
+
+| Thứ | Công việc | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu |
+|---|---|---|---|---|
+| 6 | - Đọc yêu cầu thực tập và template worklog của anh chị đi trước<br>- Khảo sát cấu trúc site Hugo: Worklog, Proposal, Blog, Event, Workshop, Self-Assessment, Feedback | 17/04/2026 | 17/04/2026 | [AWS Study Group Cloud Journey](https://cloudjourney.awsstudygroup.com/vi/)<br>[AWS Free Tier Workshop](https://000001.awsstudygroup.com/vi/) |
+| 7 | - Tìm hiểu AWS Free Tier, credit, billing dashboard và các rủi ro phát sinh chi phí<br>- Tạo checklist bảo mật ban đầu: root MFA, không dùng root hằng ngày, tạo IAM user/role theo nhu cầu | 18/04/2026 | 18/04/2026 | [AWS Free Tier Workshop](https://000001.awsstudygroup.com/vi/)<br>[IAM Best Practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)<br>[IAM Docs](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html) |
+| CN | - Tạo ghi chú nguồn tài liệu chính thức dùng xuyên suốt thực tập<br>- Lập danh sách lab cần học: IAM, VPC, EC2, RDS, ASG, Budget, CloudWatch | 19/04/2026 | 19/04/2026 | [AWS Documentation](https://docs.aws.amazon.com/)<br>[AWS Study Group](https://cloudjourney.awsstudygroup.com/vi/) |
+
+---
+
+## Kết quả đạt được tuần 1
+
+- Hiểu cách trình bày worklog đúng format: mục tiêu, bảng công việc theo ngày, nguồn tài liệu và kết quả đạt được.
+- Thiết lập được nguyên tắc học AWS an toàn: bật MFA, quản lý ngân sách, không dùng root cho tác vụ hằng ngày.
+- Xác định lộ trình lab phù hợp với project cuối kỳ: identity → network → compute/database → monitoring/cost → proposal/project.
 
 
-### Mục tiêu tuần 1:
-
-* Kết nối, làm quen với các thành viên trong First Cloud AI Journey.
-* Hiểu dịch vụ AWS cơ bản, cách dùng console & CLI.
-
-### Các công việc cần triển khai trong tuần này:
-| Thứ | Công việc                                                                                                                                                                                   | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu                            |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | --------------- | ----------------------------------------- |
-| 2   | - Làm quen với các thành viên FCAJ <br> - Đọc và lưu ý các nội quy, quy định tại đơn vị thực tập                                                                                             | 11/08/2025   | 11/08/2025      |
-| 3   | - Tìm hiểu AWS và các loại dịch vụ <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                            | 12/08/2025   | 12/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Tạo AWS Free Tier account <br> - Tìm hiểu AWS Console & AWS CLI <br> - **Thực hành:** <br>&emsp; + Tạo AWS account <br>&emsp; + Cài AWS CLI & cấu hình <br> &emsp; + Cách sử dụng AWS CLI | 13/08/2025   | 13/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Tìm hiểu EC2 cơ bản: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - Các cách remote SSH vào EC2 <br> - Tìm hiểu Elastic IP   <br>                  | 14/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Thực hành:** <br>&emsp; + Tạo EC2 instance <br>&emsp; + Kết nối SSH <br>&emsp; + Gắn EBS volume                                                                                         | 15/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-
-
-### Kết quả đạt được tuần 1:
-
-* Hiểu AWS là gì và nắm được các nhóm dịch vụ cơ bản: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
-
-* Đã tạo và cấu hình AWS Free Tier account thành công.
-
-* Làm quen với AWS Management Console và biết cách tìm, truy cập, sử dụng dịch vụ từ giao diện web.
-
-* Cài đặt và cấu hình AWS CLI trên máy tính bao gồm:
-  * Access Key
-  * Secret Key
-  * Region mặc định
-  * ...
-
-* Sử dụng AWS CLI để thực hiện các thao tác cơ bản như:
-
-  * Kiểm tra thông tin tài khoản & cấu hình
-  * Lấy danh sách region
-  * Xem dịch vụ EC2
-  * Tạo và quản lý key pair
-  * Kiểm tra thông tin dịch vụ đang chạy
-  * ...
-
-* Có khả năng kết nối giữa giao diện web và CLI để quản lý tài nguyên AWS song song.
-* ...
-
-
+---

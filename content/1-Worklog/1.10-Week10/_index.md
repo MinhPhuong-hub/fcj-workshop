@@ -1,57 +1,38 @@
 ---
-title: "Week 10 Worklog"
-date: 2024-01-01
-weight: 2
+title: "Worklog week 10"
+weight: 10
 chapter: false
-pre: " <b> 1.10. </b> "
+pre: " <b>1.10 </b> "
 ---
-{{% notice warning %}} 
-⚠️ **Note:** The following information is for reference purposes only. Please **do not copy verbatim** for your own report, including this warning.
-{{% /notice %}}
 
+# Worklog Week 10: Standardizing Hugo workshop content and preparing the final project
 
-### Week 10 Objectives:
+**Time:** 15/06/2026 - 21/06/2026
 
-* Connect and get acquainted with members of First Cloud AI Journey.
-* Understand basic AWS services, how to use the console & CLI.
+## Week 10 objectives
 
-### Tasks to be carried out this week:
-| Day | Task                                                                                                                                                                                                   | Start Date | Completion Date | Reference Material                        |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ----------------------------------------- |
-| 2   | - Get acquainted with FCAJ members <br> - Read and take note of internship unit rules and regulations                                                                                                   | 08/11/2025 | 08/11/2025      |
-| 3   | - Learn about AWS and its types of services <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                              | 08/12/2025 | 08/12/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Create AWS Free Tier account <br> - Learn about AWS Console & AWS CLI <br> - **Practice:** <br>&emsp; + Create AWS account <br>&emsp; + Install & configure AWS CLI <br> &emsp; + How to use AWS CLI | 08/13/2025 | 08/13/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Learn basic EC2: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - SSH connection methods to EC2 <br> - Learn about Elastic IP   <br>                            | 08/14/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Practice:** <br>&emsp; + Launch an EC2 instance <br>&emsp; + Connect via SSH <br>&emsp; + Attach an EBS volume                                                                                     | 08/15/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
+- Clean the Hugo workshop structure and align pages with the final project direction.
+- Prepare the project narrative before writing the proposal.
+- Review the source list and ensure each major AWS component has official documentation.
 
+---
 
-### Week 10 Achievements:
+## Tasks to complete this week
 
-* Understood what AWS is and mastered the basic service groups: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
+| Day | Task | Start date | Completion date | References |
+|---|---|---|---|---|
+| Mon | Review Hugo content folders and confirm bilingual page naming conventions. | 15/06/2026 | 15/06/2026 | [AWS Study Group Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
+| Tue | Standardize worklog, proposal, blog, event, workshop, self-rating, and feedback navigation. | 16/06/2026 | 16/06/2026 | [AWS Study Group Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
+| Wed | Create a source mapping table for IAM, VPC, EC2, RDS, CloudWatch, cost management, and Well-Architected. | 17/06/2026 | 17/06/2026 | [AWS Documentation](https://docs.aws.amazon.com/)<br>[AWS Well-Architected Framework](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html) |
+| Thu | Draft the final project story: internal worker, private database, no public access, logging, and evidence. | 18/06/2026 | 18/06/2026 | [AWS Well-Architected Security Pillar](https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/welcome.html)<br>[Amazon VPC Workshop](https://000003.awsstudygroup.com/)<br>[Amazon VPC Documentation](https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html) |
+| Fri-Sun | Prepare the content checklist for proposal writing and final diagram creation. | 19/06/2026 | 21/06/2026 | [AWS Study Group Cloud Journey](https://cloudjourney.awsstudygroup.com/)<br>[AWS Well-Architected Framework](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html) |
 
-* Successfully created and configured an AWS Free Tier account.
+---
 
-* Became familiar with the AWS Management Console and learned how to find, access, and use services via the web interface.
+## Week 10 outcomes
 
-* Installed and configured AWS CLI on the computer, including:
-  * Access Key
-  * Secret Key
-  * Default Region
-  * ...
+- Cleaned the workshop direction and page structure.
+- Prepared a coherent final project narrative.
+- Created a source-to-component mapping that supports proposal writing.
 
-* Used AWS CLI to perform basic operations such as:
-
-  * Check account & configuration information
-  * Retrieve the list of regions
-  * View EC2 service
-  * Create and manage key pairs
-  * Check information about running services
-  * ...
-
-* Acquired the ability to connect between the web interface and CLI to manage AWS resources in parallel.
-* ...
+---

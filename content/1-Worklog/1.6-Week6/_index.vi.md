@@ -1,58 +1,39 @@
 ---
-title: "Worklog Tuần 6"
-date: 2024-01-01
-weight: 1
+title: "Worklog tuần 6"
+weight: 6
 chapter: false
-pre: " <b> 1.6. </b> "
+pre: " <b>1.6 </b> "
 ---
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
+
+# Worklog tuần 6: Auto Scaling, Load Balancing và tính sẵn sàng
+
+**Thời gian:** 18/05/2026 - 24/05/2026
+
+## Mục tiêu tuần 6
+
+- Hiểu Auto Scaling Group, Launch Template và Elastic Load Balancer ở mức ứng dụng web.
+- Phân biệt workload public web app với internal worker không cần public ALB.
+- Rút ra tiêu chí scaling phù hợp cho project cuối kỳ.
+
+---
+
+## Các công việc cần triển khai trong tuần này
+
+| Thứ | Công việc | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu |
+|---|---|---|---|---|
+| 2 | - Học Launch Template, AMI, user data và Auto Scaling Group<br>- Ghi chú quan hệ giữa template và instance được tạo tự động | 18/05/2026 | 18/05/2026 | [ASG Workshop](https://000006.awsstudygroup.com/vi/)<br>[EC2 Docs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html) |
+| 3 | - Thực hành tạo ASG cho ứng dụng mẫu<br>- Kiểm tra desired/min/max capacity và health check | 19/05/2026 | 19/05/2026 | [ASG Workshop](https://000006.awsstudygroup.com/vi/) |
+| 4 | - Tìm hiểu ELB và cách phân phối traffic đến nhiều instance<br>- Vẽ lại luồng web app: user → load balancer → EC2 → RDS | 20/05/2026 | 20/05/2026 | [ASG Workshop](https://000006.awsstudygroup.com/vi/)<br>[Well-Architected Reliability](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html) |
+| 5 | - So sánh ASG web app với internal worker queue-based<br>- Ghi chú vì sao project cuối kỳ ưu tiên queue/SQS thay vì public load balancer | 21/05/2026 | 21/05/2026 | [AWS Well-Architected Framework](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html)<br>[CloudWatch Docs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html) |
+| 6-CN | - Tổng hợp bài học về availability, health check, scaling signal và cost<br>- Dọn dẹp ASG, launch template và instance test | 22/05/2026 | 24/05/2026 | [ASG Cleanup Lab](https://000006.awsstudygroup.com/vi/)<br>[AWS Budget Workshop](https://000007.awsstudygroup.com/vi/) |
+
+---
+
+## Kết quả đạt được tuần 6
+
+- Biết triển khai ASG/Launch Template trong lab và hiểu cách nó hỗ trợ availability.
+- Phân biệt được kiến trúc public web app và kiến trúc internal worker.
+- Có căn cứ để giải thích trong proposal vì sao project cuối kỳ không dùng public ALB mà dùng event/queue để kích hoạt xử lý nội bộ.
 
 
-### Mục tiêu tuần 6:
-
-* Kết nối, làm quen với các thành viên trong First Cloud AI Journey.
-* Hiểu dịch vụ AWS cơ bản, cách dùng console & CLI.
-
-### Các công việc cần triển khai trong tuần này:
-| Thứ | Công việc                                                                                                                                                                                   | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu                            |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | --------------- | ----------------------------------------- |
-| 2   | - Làm quen với các thành viên FCAJ <br> - Đọc và lưu ý các nội quy, quy định tại đơn vị thực tập                                                                                             | 11/08/2025   | 11/08/2025      |
-| 3   | - Tìm hiểu AWS và các loại dịch vụ <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                            | 12/08/2025   | 12/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Tạo AWS Free Tier account <br> - Tìm hiểu AWS Console & AWS CLI <br> - **Thực hành:** <br>&emsp; + Tạo AWS account <br>&emsp; + Cài AWS CLI & cấu hình <br> &emsp; + Cách sử dụng AWS CLI | 13/08/2025   | 13/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Tìm hiểu EC2 cơ bản: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - Các cách remote SSH vào EC2 <br> - Tìm hiểu Elastic IP   <br>                  | 14/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Thực hành:** <br>&emsp; + Tạo EC2 instance <br>&emsp; + Kết nối SSH <br>&emsp; + Gắn EBS volume                                                                                         | 15/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-
-
-### Kết quả đạt được tuần 6:
-* Hiểu AWS là gì và nắm được các nhóm dịch vụ cơ bản: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
-
-* Đã tạo và cấu hình AWS Free Tier account thành công.
-
-* Làm quen với AWS Management Console và biết cách tìm, truy cập, sử dụng dịch vụ từ giao diện web.
-
-* Cài đặt và cấu hình AWS CLI trên máy tính bao gồm:
-  * Access Key
-  * Secret Key
-  * Region mặc định
-  * ...
-
-* Sử dụng AWS CLI để thực hiện các thao tác cơ bản như:
-
-  * Kiểm tra thông tin tài khoản & cấu hình
-  * Lấy danh sách region
-  * Xem dịch vụ EC2
-  * Tạo và quản lý key pair
-  * Kiểm tra thông tin dịch vụ đang chạy
-  * ...
-
-* Có khả năng kết nối giữa giao diện web và CLI để quản lý tài nguyên AWS song song.
-* ...
-
-
+---

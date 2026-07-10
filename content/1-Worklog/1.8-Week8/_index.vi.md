@@ -1,59 +1,39 @@
 ---
-title: "Worklog Tuần 8"
-date: 2024-01-01
-weight: 1
+title: "Worklog tuần 8"
+weight: 8
 chapter: false
-pre: " <b> 1.8. </b> "
+pre: " <b>1.8 </b> "
 ---
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
+
+# Worklog tuần 8: CloudWatch, logs, metrics, alarms và evidence
+
+**Thời gian:** 01/06/2026 - 07/06/2026
+
+## Mục tiêu tuần 8
+
+- Hiểu CloudWatch như lớp observability cho AWS workload.
+- Thực hành log group, metric, alarm và dashboard.
+- Chuẩn bị evidence plane cho project cuối kỳ.
+
+---
+
+## Các công việc cần triển khai trong tuần này
+
+| Thứ | Công việc | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu |
+|---|---|---|---|---|
+| 2 | - Học tổng quan CloudWatch, Metrics, Logs, Alarms và Dashboard<br>- Ghi chú sự khác nhau giữa log, metric và alarm | 01/06/2026 | 01/06/2026 | [CloudWatch Workshop](https://000008.awsstudygroup.com/vi/)<br>[CloudWatch Docs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html) |
+| 3 | - Tạo log group và đọc log từ ứng dụng/lab<br>- Xác định log nào dùng làm bằng chứng khi demo project | 02/06/2026 | 02/06/2026 | [CloudWatch Logs Lab](https://000008.awsstudygroup.com/vi/)<br>[CloudWatch Logs Docs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs.html) |
+| 4 | - Thực hành metrics và math expression trong CloudWatch<br>- Ghi lại cách nhìn CPU, network, error count và trạng thái tài nguyên | 03/06/2026 | 03/06/2026 | [CloudWatch Metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/working_with_metrics.html)<br>[CloudWatch Workshop](https://000008.awsstudygroup.com/vi/) |
+| 5 | - Tạo alarm đơn giản và đưa vào dashboard<br>- Liên hệ alarm với SNS notification trong project cuối kỳ | 04/06/2026 | 04/06/2026 | [CloudWatch Alarms](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Alarms.html)<br>[CloudWatch Dashboard Lab](https://000008.awsstudygroup.com/vi/) |
+| 6-CN | - Thiết kế danh sách evidence cần có: log worker, metric, alarm state, RDS record, queue message, Terraform output<br>- Dọn dẹp log group/dashboard thử nghiệm nếu không cần giữ | 05/06/2026 | 07/06/2026 | [CloudWatch Docs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html)<br>[AWS Well-Architected Framework](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html) |
+
+---
+
+## Kết quả đạt được tuần 8
+
+- Hiểu CloudWatch là phần bắt buộc để chứng minh workload thật sự vận hành, không chỉ vẽ diagram.
+- Biết phân biệt log để debug, metric để đo trạng thái và alarm để cảnh báo.
+- Chuẩn bị được danh sách evidence cho tuần triển khai project.
 
 
-### Mục tiêu tuần 8:
-
-* Kết nối, làm quen với các thành viên trong First Cloud AI Journey.
-* Hiểu dịch vụ AWS cơ bản, cách dùng console & CLI.
-
-### Các công việc cần triển khai trong tuần này:
-| Thứ | Công việc                                                                                                                                                                                   | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu                            |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | --------------- | ----------------------------------------- |
-| 2   | - Làm quen với các thành viên FCAJ <br> - Đọc và lưu ý các nội quy, quy định tại đơn vị thực tập                                                                                             | 11/08/2025   | 11/08/2025      |
-| 3   | - Tìm hiểu AWS và các loại dịch vụ <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                            | 12/08/2025   | 12/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Tạo AWS Free Tier account <br> - Tìm hiểu AWS Console & AWS CLI <br> - **Thực hành:** <br>&emsp; + Tạo AWS account <br>&emsp; + Cài AWS CLI & cấu hình <br> &emsp; + Cách sử dụng AWS CLI | 13/08/2025   | 13/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Tìm hiểu EC2 cơ bản: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - Các cách remote SSH vào EC2 <br> - Tìm hiểu Elastic IP   <br>                  | 14/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Thực hành:** <br>&emsp; + Tạo EC2 instance <br>&emsp; + Kết nối SSH <br>&emsp; + Gắn EBS volume                                                                                         | 15/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-
-
-### Kết quả đạt được tuần 8:
-
-* Hiểu AWS là gì và nắm được các nhóm dịch vụ cơ bản: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
-
-* Đã tạo và cấu hình AWS Free Tier account thành công.
-
-* Làm quen với AWS Management Console và biết cách tìm, truy cập, sử dụng dịch vụ từ giao diện web.
-
-* Cài đặt và cấu hình AWS CLI trên máy tính bao gồm:
-  * Access Key
-  * Secret Key
-  * Region mặc định
-  * ...
-
-* Sử dụng AWS CLI để thực hiện các thao tác cơ bản như:
-
-  * Kiểm tra thông tin tài khoản & cấu hình
-  * Lấy danh sách region
-  * Xem dịch vụ EC2
-  * Tạo và quản lý key pair
-  * Kiểm tra thông tin dịch vụ đang chạy
-  * ...
-
-* Có khả năng kết nối giữa giao diện web và CLI để quản lý tài nguyên AWS song song.
-* ...
-
-
+---

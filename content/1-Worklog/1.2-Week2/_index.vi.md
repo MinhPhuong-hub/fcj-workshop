@@ -1,59 +1,39 @@
 ---
-title: "Worklog Tuần 2"
-date: 2024-01-01
-weight: 1
+title: "Worklog tuần 2"
+weight: 2
 chapter: false
-pre: " <b> 1.2. </b> "
+pre: " <b>1.2 </b> "
 ---
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
+
+# Worklog tuần 2: IAM, phân quyền và nguyên tắc least privilege
+
+**Thời gian:** 20/04/2026 - 26/04/2026
+
+## Mục tiêu tuần 2
+
+- Hiểu IAM user, group, policy, role và temporary credentials.
+- Thực hành phân quyền theo nhóm, switch role và policy giới hạn thao tác.
+- Ghi lại các lỗi phân quyền thường gặp khi làm lab.
+
+---
+
+## Các công việc cần triển khai trong tuần này
+
+| Thứ | Công việc | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu |
+|---|---|---|---|---|
+| 2 | - Học mô hình IAM: principal, action, resource, condition<br>- Ghi chú khác biệt giữa IAM user, IAM group, IAM role và policy | 20/04/2026 | 20/04/2026 | [IAM Workshop](https://000002.awsstudygroup.com/vi/)<br>[IAM Docs](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html) |
+| 3 | - Tạo mô hình phân quyền mẫu: Admin, Operator, ReadOnly<br>- Thực hành switch role và kiểm tra phiên quyền tạm thời | 21/04/2026 | 21/04/2026 | [Switch Role Lab](https://000002.awsstudygroup.com/vi/)<br>[IAM Best Practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html) |
+| 4 | - Viết policy kiểm soát region và instance type dùng trong lab<br>- Kiểm tra tác động của allow/deny và condition trong IAM policy | 22/04/2026 | 22/04/2026 | [IAM Docs](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html)<br>[EC2 Cost Governance Lab](https://000004.awsstudygroup.com/vi/) |
+| 5 | - Liên hệ IAM với project cuối kỳ: EC2 worker cần instance profile, không hard-code access key<br>- Ghi checklist quyền tối thiểu cho worker | 23/04/2026 | 23/04/2026 | [IAM Role Lab](https://000002.awsstudygroup.com/vi/)<br>[Security Pillar](https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/welcome.html) |
+| 6-CN | - Tổng hợp lỗi gặp khi cấp quyền sai resource hoặc thiếu trust relationship<br>- Dọn dẹp user/role/policy thử nghiệm không cần thiết | 24/04/2026 | 26/04/2026 | [IAM Best Practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)<br>[AWS Free Tier Workshop](https://000001.awsstudygroup.com/vi/) |
+
+---
+
+## Kết quả đạt được tuần 2
+
+- Nắm được cách IAM kiểm soát xác thực và ủy quyền trong AWS.
+- Biết sử dụng role thay cho access key cố định khi service cần gọi AWS API.
+- Có checklist least privilege áp dụng cho EC2 worker, RDS, SQS, CloudWatch và S3 evidence trong project cuối kỳ.
 
 
-### Mục tiêu tuần 2:
-
-* Kết nối, làm quen với các thành viên trong First Cloud AI Journey.
-* Hiểu dịch vụ AWS cơ bản, cách dùng console & CLI.
-
-### Các công việc cần triển khai trong tuần này:
-| Thứ | Công việc                                                                                                                                                                                   | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu                            |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | --------------- | ----------------------------------------- |
-| 2   | - Làm quen với các thành viên FCAJ <br> - Đọc và lưu ý các nội quy, quy định tại đơn vị thực tập                                                                                             | 11/08/2025   | 11/08/2025      |
-| 3   | - Tìm hiểu AWS và các loại dịch vụ <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                            | 12/08/2025   | 12/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Tạo AWS Free Tier account <br> - Tìm hiểu AWS Console & AWS CLI <br> - **Thực hành:** <br>&emsp; + Tạo AWS account <br>&emsp; + Cài AWS CLI & cấu hình <br> &emsp; + Cách sử dụng AWS CLI | 13/08/2025   | 13/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Tìm hiểu EC2 cơ bản: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - Các cách remote SSH vào EC2 <br> - Tìm hiểu Elastic IP   <br>                  | 14/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Thực hành:** <br>&emsp; + Tạo EC2 instance <br>&emsp; + Kết nối SSH <br>&emsp; + Gắn EBS volume                                                                                         | 15/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-
-
-### Kết quả đạt được tuần 2:
-
-* Hiểu AWS là gì và nắm được các nhóm dịch vụ cơ bản: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
-
-* Đã tạo và cấu hình AWS Free Tier account thành công.
-
-* Làm quen với AWS Management Console và biết cách tìm, truy cập, sử dụng dịch vụ từ giao diện web.
-
-* Cài đặt và cấu hình AWS CLI trên máy tính bao gồm:
-  * Access Key
-  * Secret Key
-  * Region mặc định
-  * ...
-
-* Sử dụng AWS CLI để thực hiện các thao tác cơ bản như:
-
-  * Kiểm tra thông tin tài khoản & cấu hình
-  * Lấy danh sách region
-  * Xem dịch vụ EC2
-  * Tạo và quản lý key pair
-  * Kiểm tra thông tin dịch vụ đang chạy
-  * ...
-
-* Có khả năng kết nối giữa giao diện web và CLI để quản lý tài nguyên AWS song song.
-* ...
-
-
+---

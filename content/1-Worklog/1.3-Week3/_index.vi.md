@@ -1,59 +1,39 @@
 ---
-title: "Worklog Tuần 3"
-date: 2024-01-01
-weight: 1
+title: "Worklog tuần 3"
+weight: 3
 chapter: false
-pre: " <b> 1.3. </b> "
+pre: " <b>1.3 </b> "
 ---
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
+
+# Worklog tuần 3: VPC, subnet, route table và truy cập private
+
+**Thời gian:** 27/04/2026 - 03/05/2026
+
+## Mục tiêu tuần 3
+
+- Thiết kế được VPC cơ bản với public/private subnet.
+- Hiểu Internet Gateway, NAT Gateway, route table, security group và network boundary.
+- Chuẩn bị nền tảng network cho project private-by-default.
+
+---
+
+## Các công việc cần triển khai trong tuần này
+
+| Thứ | Công việc | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu |
+|---|---|---|---|---|
+| 2 | - Học khái niệm VPC, CIDR, subnet, route table, Internet Gateway và NAT Gateway<br>- Vẽ sơ đồ mạng mức cơ bản bằng ký hiệu AWS | 27/04/2026 | 27/04/2026 | [VPC Workshop](https://000003.awsstudygroup.com/vi/)<br>[Amazon VPC Docs](https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html) |
+| 3 | - Tạo VPC lab gồm public subnet và private subnet<br>- Kiểm tra route table và gateway attachment | 28/04/2026 | 28/04/2026 | [Create VPC Docs](https://docs.aws.amazon.com/vpc/latest/userguide/create-vpc.html)<br>[VPC Workshop](https://000003.awsstudygroup.com/vi/) |
+| 4 | - Cấu hình security group cho EC2 và kiểm tra inbound/outbound rule<br>- Ghi chú khác biệt security group và subnet boundary | 29/04/2026 | 29/04/2026 | [Security Group Docs](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html)<br>[Security Pillar](https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/welcome.html) |
+| 5 | - Tìm hiểu hướng truy cập private bằng SSM Session Manager hoặc EC2 Instance Connect Endpoint<br>- Phân tích vì sao project cuối kỳ không cần mở SSH/RDP ra Internet | 30/04/2026 | 30/04/2026 | [Amazon VPC Docs](https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html)<br>[EC2 Docs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html) |
+| 6-CN | - Review diagram network, sửa nhãn public/private subnet<br>- Ghi lại tiêu chí network đúng: database không public, worker private, endpoint/service access rõ ràng | 01/05/2026 | 03/05/2026 | [AWS Well-Architected Framework](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html)<br>[VPC Workshop](https://000003.awsstudygroup.com/vi/) |
+
+---
+
+## Kết quả đạt được tuần 3
+
+- Tạo được tư duy thiết kế VPC theo boundary: public layer, private workload layer và managed service layer.
+- Hiểu vai trò security group trong kiểm soát traffic tới EC2/RDS.
+- Chuẩn bị được tiêu chí kiểm tra diagram cuối kỳ: service nào nằm trong private subnet, service nào là regional managed service, service nào dùng để audit/evidence.
 
 
-### Mục tiêu tuần 3:
-
-* Kết nối, làm quen với các thành viên trong First Cloud AI Journey.
-* Hiểu dịch vụ AWS cơ bản, cách dùng console & CLI.
-
-### Các công việc cần triển khai trong tuần này:
-| Thứ | Công việc                                                                                                                                                                                   | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu                            |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | --------------- | ----------------------------------------- |
-| 2   | - Làm quen với các thành viên FCAJ <br> - Đọc và lưu ý các nội quy, quy định tại đơn vị thực tập                                                                                             | 11/08/2025   | 11/08/2025      |
-| 3   | - Tìm hiểu AWS và các loại dịch vụ <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                            | 12/08/2025   | 12/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Tạo AWS Free Tier account <br> - Tìm hiểu AWS Console & AWS CLI <br> - **Thực hành:** <br>&emsp; + Tạo AWS account <br>&emsp; + Cài AWS CLI & cấu hình <br> &emsp; + Cách sử dụng AWS CLI | 13/08/2025   | 13/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Tìm hiểu EC2 cơ bản: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - Các cách remote SSH vào EC2 <br> - Tìm hiểu Elastic IP   <br>                  | 14/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Thực hành:** <br>&emsp; + Tạo EC2 instance <br>&emsp; + Kết nối SSH <br>&emsp; + Gắn EBS volume                                                                                         | 15/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-
-
-### Kết quả đạt được tuần 3:
-
-* Hiểu AWS là gì và nắm được các nhóm dịch vụ cơ bản: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
-
-* Đã tạo và cấu hình AWS Free Tier account thành công.
-
-* Làm quen với AWS Management Console và biết cách tìm, truy cập, sử dụng dịch vụ từ giao diện web.
-
-* Cài đặt và cấu hình AWS CLI trên máy tính bao gồm:
-  * Access Key
-  * Secret Key
-  * Region mặc định
-  * ...
-
-* Sử dụng AWS CLI để thực hiện các thao tác cơ bản như:
-
-  * Kiểm tra thông tin tài khoản & cấu hình
-  * Lấy danh sách region
-  * Xem dịch vụ EC2
-  * Tạo và quản lý key pair
-  * Kiểm tra thông tin dịch vụ đang chạy
-  * ...
-
-* Có khả năng kết nối giữa giao diện web và CLI để quản lý tài nguyên AWS song song.
-* ...
-
-
+---

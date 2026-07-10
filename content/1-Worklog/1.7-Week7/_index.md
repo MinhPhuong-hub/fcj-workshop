@@ -1,57 +1,38 @@
 ---
-title: "Week 7 Worklog"
-date: 2024-01-01
-weight: 1
+title: "Worklog week 7"
+weight: 7
 chapter: false
-pre: " <b> 1.7. </b> "
+pre: " <b>1.7 </b> "
 ---
-{{% notice warning %}} 
-⚠️ **Note:** The following information is for reference purposes only. Please **do not copy verbatim** for your own report, including this warning.
-{{% /notice %}}
 
+# Worklog Week 7: Cost Management, AWS Budgets, and cleanup discipline
 
-### Week 7 Objectives:
+**Time:** 25/05/2026 - 31/05/2026
 
-* Connect and get acquainted with members of First Cloud AI Journey.
-* Understand basic AWS services, how to use the console & CLI.
+## Week 7 objectives
 
-### Tasks to be carried out this week:
-| Day | Task                                                                                                                                                                                                   | Start Date | Completion Date | Reference Material                        |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ----------------------------------------- |
-| 2   | - Get acquainted with FCAJ members <br> - Read and take note of internship unit rules and regulations                                                                                                   | 08/11/2025 | 08/11/2025      |
-| 3   | - Learn about AWS and its types of services <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                              | 08/12/2025 | 08/12/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Create AWS Free Tier account <br> - Learn about AWS Console & AWS CLI <br> - **Practice:** <br>&emsp; + Create AWS account <br>&emsp; + Install & configure AWS CLI <br> &emsp; + How to use AWS CLI | 08/13/2025 | 08/13/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Learn basic EC2: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - SSH connection methods to EC2 <br> - Learn about Elastic IP   <br>                            | 08/14/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Practice:** <br>&emsp; + Launch an EC2 instance <br>&emsp; + Connect via SSH <br>&emsp; + Attach an EBS volume                                                                                     | 08/15/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
+- Understand AWS cost categories and the need for budget control during labs.
+- Practice budget alerts and resource cleanup discipline.
+- Add cost-risk awareness to the final proposal.
 
+---
 
-### Week 7 Achievements:
+## Tasks to complete this week
 
-* Understood what AWS is and mastered the basic service groups: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
+| Day | Task | Start date | Completion date | References |
+|---|---|---|---|---|
+| Mon | Review Free Tier limits and identify services that can produce unexpected charges. | 25/05/2026 | 25/05/2026 | [AWS Free Tier Workshop](https://000001.awsstudygroup.com/) <br>[AWS Budgets Documentation](https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html)<br>[AWS Cost Management](https://docs.aws.amazon.com/cost-management/) |
+| Tue | Study AWS Budgets, billing alerts, and cost monitoring workflow. | 26/05/2026 | 26/05/2026 | [AWS Budgets Documentation](https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html)<br>[AWS Cost Management](https://docs.aws.amazon.com/cost-management/) |
+| Wed | Create a cleanup checklist for EC2, EBS, Elastic IP, NAT Gateway, RDS, CloudWatch logs, and snapshots. | 27/05/2026 | 27/05/2026 | [AWS Budgets Documentation](https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html)<br>[AWS Cost Management](https://docs.aws.amazon.com/cost-management/)<br>[AWS Documentation](https://docs.aws.amazon.com/) |
+| Thu | Review cost trade-offs of NAT Gateway, RDS, and always-on EC2 resources. | 28/05/2026 | 28/05/2026 | [Amazon VPC Workshop](https://000003.awsstudygroup.com/)<br>[Amazon VPC Documentation](https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html)<br>[Amazon RDS Workshop](https://000005.awsstudygroup.com/)<br>[Amazon RDS Documentation](https://docs.aws.amazon.com/rds/)<br>[Amazon EC2 Workshop](https://000004.awsstudygroup.com/)<br>[Amazon EC2 Documentation](https://docs.aws.amazon.com/ec2/) |
+| Fri-Sun | Add budget and cleanup notes to the project evidence checklist. | 29/05/2026 | 31/05/2026 | [AWS Budgets Documentation](https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html)<br>[AWS Cost Management](https://docs.aws.amazon.com/cost-management/)<br>[AWS Well-Architected Framework](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html) |
 
-* Successfully created and configured an AWS Free Tier account.
+---
 
-* Became familiar with the AWS Management Console and learned how to find, access, and use services via the web interface.
+## Week 7 outcomes
 
-* Installed and configured AWS CLI on the computer, including:
-  * Access Key
-  * Secret Key
-  * Default Region
-  * ...
+- Understood how lab resources can create cost risk.
+- Created a repeatable cleanup checklist.
+- Prepared cost and cleanup controls for the final project submission.
 
-* Used AWS CLI to perform basic operations such as:
-
-  * Check account & configuration information
-  * Retrieve the list of regions
-  * View EC2 service
-  * Create and manage key pairs
-  * Check information about running services
-  * ...
-
-* Acquired the ability to connect between the web interface and CLI to manage AWS resources in parallel.
-* ...
+---
