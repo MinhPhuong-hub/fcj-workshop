@@ -6,7 +6,6 @@ pre: "<b>7. </b>"
 slug: "7-feedback"
 ---
 
-# Feedback and Suggestions
 
 ## General Evaluation
 

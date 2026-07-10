@@ -7,7 +7,7 @@ pre: " <b> 5. </b> "
 ---
 
 
-Chương này bao gồm hướng dẫn triển khai toàn diện từ đầu đến cuối cho **Private-by-Default AWS Workload Platform**.
+Chương này bao gồm hướng dẫn triển khai toàn diện từ đầu đến cuối cho **Secure Internal Job Processing Platform on AWS**. 
 
 Vui lòng thực hiện theo thứ tự các mục con dưới đây:
 

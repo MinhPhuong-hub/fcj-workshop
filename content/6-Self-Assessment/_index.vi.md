@@ -6,7 +6,7 @@ pre: "<b>6. </b>"
 slug: "6-self-rating"
 ---
 
-# Tự đánh giá
+
 
 Trong suốt thời gian thực tập từ **17/04/2026 đến 10/07/2026**, tôi đã tập trung xây dựng nền tảng Cloud theo hướng **Cloud Security / Infrastructure Architect**. Nội dung học và thực hành được triển khai theo worklog 12 tuần, bắt đầu từ việc làm quen AWS Free Tier, IAM, VPC, EC2, RDS, Auto Scaling, CloudWatch, Cost Management, Infrastructure as Code, sau đó chuyển sang hoàn thiện proposal, AWS diagram và triển khai project cuối kỳ.
 

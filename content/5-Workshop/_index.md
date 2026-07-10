@@ -7,7 +7,7 @@ pre: " <b> 5. </b> "
 ---
 
 
-This chapter contains the end-to-end implementation guide for **Private-by-Default AWS Workload Platform**.
+This chapter contains the end-to-end implementation guide for **Secure Internal Job Processing Platform on AWS**.
 
 Use the sub-sections in order:
 
