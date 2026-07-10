@@ -1,20 +1,22 @@
 ---
 title: "Blogs Posted"
-date: 2026-07-06
+date: 2024-01-01
 weight: 3
 chapter: false
 pre: " <b> 3. </b> "
 ---
 
+{{% notice warning %}}
+⚠️ **Note:** The information below is for reference purposes only. Please **do not copy verbatim** for your own report, including this warning.
+{{% /notice %}}
 
-### [3.1 Blog 1 - Deploy Static Website on AWS with Amazon S3 Private, CloudFront and OAC](3.1-Blog1/)
+This section will list and introduce the blogs you have posted to [AWS Study Group](https://www.facebook.com/groups/awsstudygroupfcj). For example:
 
-This article guides you through the process of hosting a secure, production-ready static website on AWS. It covers how to configure Amazon S3 in a completely private mode, distribute content globally with low latency using Amazon CloudFront, and restrict direct bucket access utilizing Origin Access Control (OAC).
+###  [Blog 1 - SESSION POLICIES IN AMAZON EKS POD IDENTITY](3.1-Blog1/)
+This blog introduces the newly added session policies feature in Amazon EKS Pod Identity, which allows you to narrow IAM permissions flexibly and precisely for each pod without needing to create multiple separate IAM roles. This is an important step forward that helps apply the principle of least privilege more effectively in large-scale Kubernetes environments.
 
-### [3.2 Blog 2 - Designing a Vietnam AI Travel Assistant MVP with Amazon Bedrock, AWS Amplify, and Amazon Location Service](3.2-Blog2/)
+###  [Blog 2 - ...](3.2-Blog2/)
+This blog introduces the newly added session policies feature in Amazon EKS Pod Identity, which allows you to narrow IAM permissions flexibly and precisely for each pod without needing to create multiple separate IAM roles. This is an important step forward that helps apply the principle of least privilege more effectively in large-scale Kubernetes environments.
 
-This article demonstrates how to architect a localized AI Travel Assistant using a Retrieval-Augmented Generation (RAG) pattern. It covers the end-to-end orchestration using AWS Lambda, prompt engineering constraints with Amazon Bedrock, map visualization via Amazon Location Service, and full-stack integration with AWS Amplify.
-
-### [3.3 Blog 3 - Designing an Event-Driven Order Management System MVP on AWS](3.3-Blog3/)
-
-This article breaks down how to build a highly scalable, decoupled order processing system for modern e-commerce. It explores serverless workflow orchestration with AWS Step Functions, asynchronous message handling using Amazon EventBridge and Amazon SQS, and critical operational resilience patterns like Idempotency and Dead-Letter Queues (DLQ).
+###  [Blog 3 - ...](3.3-Blog3/)
+This blog introduces the newly added session policies feature in Amazon EKS Pod Identity, which allows you to narrow IAM permissions flexibly and precisely for each pod without needing to create multiple separate IAM roles. This is an important step forward that helps apply the principle of least privilege more effectively in large-scale Kubernetes environments.

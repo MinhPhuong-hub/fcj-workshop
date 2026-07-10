@@ -1,20 +1,22 @@
 ---
-title: "Blogs Posted"
-date: 2026-07-06
+title: "Các bài blogs đã đăng"
+date: 2024-01-01
 weight: 3
 chapter: false
 pre: " <b> 3. </b> "
 ---
 
+{{% notice warning %}}  
+⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
+{{% /notice %}}
 
-### [3.1 Blog 1 - Deploy Static Website on AWS with Amazon S3 Private, CloudFront and OAC](3.1-Blog1/)
+Tại đây sẽ là phần liệt kê, giới thiệu các blogs mà các bạn đã đăng trên [AWS Study Group](https://www.facebook.com/groups/awsstudygroupfcj). Ví dụ:
 
-Bài viết này hướng dẫn bạn quy trình triển khai một website tĩnh an toàn, sẵn sàng cho môi trường production trên AWS. Nội dung bao gồm cách cấu hình Amazon S3 ở chế độ hoàn toàn riêng tư (private), phân phối nội dung toàn cầu với độ trễ thấp bằng Amazon CloudFront, và chặn truy cập trực tiếp vào bucket nhờ Origin Access Control (OAC).
+###  [Blog 1 - SESSION POLICIES TRONG AMAZON EKS POD IDENTITY](3.1-Blog1/)
+Blog này giới thiệu Amazon EKS Pod Identity vừa bổ sung tính năng session policies, cho phép bạn thu hẹp quyền IAM một cách linh hoạt và chính xác cho từng pod mà không cần tạo thêm nhiều IAM roles riêng biệt. Đây là bước tiến quan trọng giúp áp dụng nguyên tắc least privilege hiệu quả hơn trong môi trường Kubernetes quy mô lớn.
 
-### [3.2 Blog 2 - Designing a Vietnam AI Travel Assistant MVP with Amazon Bedrock, AWS Amplify, and Amazon Location Service](3.2-Blog2/)
+###  [Blog 2 - ...](3.2-Blog2/)
+Blog này giới thiệu Amazon EKS Pod Identity vừa bổ sung tính năng session policies, cho phép bạn thu hẹp quyền IAM một cách linh hoạt và chính xác cho từng pod mà không cần tạo thêm nhiều IAM roles riêng biệt. Đây là bước tiến quan trọng giúp áp dụng nguyên tắc least privilege hiệu quả hơn trong môi trường Kubernetes quy mô lớn.
 
-Bài viết này trình bày cách thiết kế một ứng dụng Trợ lý Du lịch AI bản địa hóa sử dụng mô hình Retrieval-Augmented Generation (RAG). Nội dung bao gồm việc điều phối luồng xử lý end-to-end bằng AWS Lambda, thiết lập các bộ lọc kiểm soát prompt với Amazon Bedrock, trực quan hóa bản đồ qua Amazon Location Service và tích hợp full-stack với AWS Amplify.
-
-### [3.3 Blog 3 - Designing an Event-Driven Order Management System MVP on AWS](3.3-Blog3/)
-
-Bài viết này phân tích cách xây dựng một hệ thống quản lý và xử lý đơn hàng có khả năng mở rộng cao và hoàn toàn độc lập (decoupled) cho thương mại điện tử hiện đại. Nội dung đi sâu vào việc điều phối workflow serverless với AWS Step Functions, xử lý thông điệp bất đồng bộ bằng Amazon EventBridge và Amazon SQS, cùng các mô hình chịu lỗi vận hành cốt lõi như Idempotency và Dead-Letter Queues (DLQ).
+###  [Blog 3 - ...](3.3-Blog3/)
+Blog này giới thiệu Amazon EKS Pod Identity vừa bổ sung tính năng session policies, cho phép bạn thu hẹp quyền IAM một cách linh hoạt và chính xác cho từng pod mà không cần tạo thêm nhiều IAM roles riêng biệt. Đây là bước tiến quan trọng giúp áp dụng nguyên tắc least privilege hiệu quả hơn trong môi trường Kubernetes quy mô lớn.
