@@ -8,7 +8,6 @@ pre: " <b> 3.1 Blog 1. </b> "
 
 
 ## Introduction
-
 When starting with AWS, many people often deploy static websites by enabling **Static Website Hosting** on Amazon S3, uploading HTML, CSS, and JavaScript files to the bucket, and then allowing public access.
 
 This approach is highly suitable for learning or demo purposes because it is simple and easy to implement. However, when moving closer to a production environment, making an S3 bucket directly public is not always the optimal choice.

@@ -55,9 +55,10 @@ Mở AWS Console bằng tài khoản administrator (quản trị viên).
 
 1. Tìm kiếm **IAM Identity Center**.
 2. Mở **IAM Identity Center**.
-![Photo](/images/5-Workshop/private-by-default/screen2,1.png)
 
-3. Nếu IAM Identity Center chưa được bật, nhấp vào **Enable**.
+![Photo](/fcj-workshop/images/5-Workshop/private-by-default/screen2-1.png)
+
+1. Nếu IAM Identity Center chưa được bật, nhấp vào **Enable**.
 ![Photo](/images/5-Workshop/private-by-default/screen2,2.jpg)
 ![Photo](/images/5-Workshop/private-by-default/screen2,3.jpg)
 

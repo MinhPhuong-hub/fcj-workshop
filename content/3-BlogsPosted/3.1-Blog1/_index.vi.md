@@ -1,315 +1,711 @@
 ---
-title: "Triển khai Website Tĩnh trên AWS với Amazon S3 Private, CloudFront và OAC"
-date: 2026-07-05
-weight: 1
+title: "Cài đặt môi trường cục bộ và quyền truy cập AWS IAM"
+date: 2026-07-04
+weight: 2
 chapter: false
-pre: " <b> 3.1 Blog 1. </b> "
+pre: " <b> 5.2. </b> "
 ---
 
-
-## Giới thiệu
-
-Khi bắt đầu học AWS, nhiều người thường triển khai website tĩnh bằng cách bật **Static Website Hosting** trên Amazon S3, sau đó upload các file HTML, CSS và JavaScript lên bucket rồi cho phép truy cập công khai.
-
-Cách làm này rất phù hợp cho mục đích học tập hoặc demo vì đơn giản và dễ thực hiện. Tuy nhiên, khi tiếp cận theo hướng gần với môi trường production hơn, việc public trực tiếp S3 bucket không phải lúc nào cũng là lựa chọn tối ưu.
-
-Trong thực tế, một kiến trúc phổ biến hơn là:
-
-- Amazon S3 Private Bucket
-- Amazon CloudFront
-- Origin Access Control (OAC)
-
-Mô hình này giúp tách biệt giữa lớp lưu trữ dữ liệu và lớp phân phối nội dung, đồng thời cải thiện tính bảo mật và khả năng mở rộng.
-
----
-
-# Kiến trúc tổng quan
-
-Luồng truy cập của hệ thống theo thứ tự:
-
-- **User** gửi yêu cầu qua giao thức **HTTPS** đến **CloudFront**
-- **CloudFront** thực hiện **OAC Signed Request** để lấy dữ liệu từ **Private S3 Bucket**
-
-Người dùng chỉ truy cập CloudFront.
-
-CloudFront sẽ thay mặt người dùng lấy dữ liệu từ S3 thông qua Origin Access Control.
-
-Trong mô hình này:
-
-- CloudFront là public entry point
-- S3 chỉ đóng vai trò lưu trữ dữ liệu
-- Người dùng không thể truy cập trực tiếp vào bucket
-
----
-
-# Các thành phần chính
-
-## Amazon S3
-
-Amazon S3 chịu trách nhiệm lưu trữ toàn bộ static files:
-
-- index.html
-- JavaScript
-- CSS
-- Images
-- Fonts
-- Các static assets khác
-
-Một số cấu hình nên áp dụng:
-
-- Block Public Access
-- Bucket Owner Enforced
-- Không bật Static Website Hosting
-- Chỉ cho phép CloudFront đọc object
-
-Điều này giúp giảm nguy cơ truy cập trực tiếp từ Internet.
-
----
-
-## Amazon CloudFront
-
-CloudFront đóng vai trò CDN và là điểm truy cập công khai của website.
-
-Các lợi ích chính:
-
-- HTTPS
-- CDN Cache
-- Custom Domain
-- HTTP → HTTPS Redirect
-- Edge Locations toàn cầu
-- Security Headers
-- Logging
-
-CloudFront giúp giảm độ trễ và tăng tốc độ tải trang cho người dùng ở nhiều khu vực khác nhau.
-
----
-
-## Origin Access Control (OAC)
-
-Origin Access Control cho phép CloudFront truy cập S3 một cách an toàn hơn.
-
-Với OAC:
-
-- CloudFront ký request gửi tới S3
-- Bucket Policy chỉ cho phép CloudFront Distribution được chỉ định truy cập
-
-Điều này tốt hơn nhiều so với việc public bucket.
-
-Một điểm cần lưu ý là OAC chỉ hoạt động với **S3 REST Endpoint**, hoàn toàn không hoạt động với **S3 Website Endpoint**.
-
----
-
-# Bảo mật và nguyên tắc Least Privilege
-
-Bucket Policy chỉ nên cho phép hành động `s3:GetObject` và chỉ áp dụng cho:
-
-- Static website files
-- CloudFront Distribution cụ thể
-
-Tuy nhiên cần hiểu rằng:
-
-OAC không phải là cơ chế phân quyền theo từng file.
-
-Nếu một file nằm trong bucket và CloudFront có quyền đọc, file đó vẫn có thể được truy cập nếu người dùng biết chính xác URL.
-
-Vì vậy:
-
-- Không lưu tài liệu nội bộ trong bucket web
-- Không lưu backup
-- Không lưu dữ liệu nhạy cảm
-
-Nên sử dụng bucket riêng cho website artifacts.
-
----
-
-# Chiến lược Cache
-
-Một trong những lỗi phổ biến nhất là: **Upload version mới nhưng website vẫn hiển thị version cũ**.
-
-Nguyên nhân thường do CloudFront hoặc trình duyệt đang cache object cũ.
-
----
-
-## Sử dụng Hashed Filename
-
-Các framework hiện đại như React, Vue, Angular, Vite thường sinh ra file có kèm chuỗi hash như: `app.8f3a1c.js` hoặc `style.92ac0d.css`.
-
-Mỗi lần build:
-
-- Tên file thay đổi
-- Cache cũ không ảnh hưởng
-
-Nhờ đó có thể cache assets trong thời gian dài.
-
----
-
-## Cache cho Assets
-
-Ví dụ cấu hình tiêu đề phản hồi: `Cache-Control: public, max-age=31536000, immutable`
-
-Áp dụng cho:
-
-- JS
-- CSS
-- Images
-- Fonts
-
----
-
-## Cache cho index.html
-
-Ngược lại: `Cache-Control: no-cache, no-store, must-revalidate` hoặc thiết lập TTL ngắn.
-
-Lý do: index.html luôn phải trỏ đến version mới nhất của ứng dụng.
-
----
-
-## CloudFront Invalidation
-
-Khi deploy:
-
-1. Upload assets có hash
-2. Upload index.html
-3. Invalidate `/index.html`
-
-Bạn nên nhắm chính xác đường dẫn `/index.html`. Không nên lạm dụng việc làm mới toàn bộ `/*` vì sẽ làm tăng chi phí, làm chậm quá trình đồng bộ (propagate) và không tối ưu hiệu năng.
-
----
-
-# SPA Routing
-
-Các ứng dụng SPA thường có các route ảo như `/dashboard`, `/profile`, `/settings`. Nhưng thực tế trong S3 không tồn tại các file hay thư mục tương ứng này.
-
-Khi người dùng thực hiện refresh tại trang `/dashboard`, CloudFront có thể nhận về mã lỗi số `403` hoặc `404`.
-
----
-
-## Giải pháp phổ biến
-
-Cấu hình Custom Error Response để chuyển hướng lỗi `403 → /index.html` và `404 → /index.html`, đồng thời trả về mã trạng thái `HTTP 200`.
-
-Điều này cho phép các thư viện như React Router, Vue Router, Angular Router tiếp tục xử lý việc điều hướng route ở phía client.
-
----
-
-## Lưu ý
-
-Nếu redirect toàn bộ lỗi về index.html:
-
-- Có thể che mất lỗi thật
-- Khó debug hơn
-
-Một cách tốt hơn là:
-
-- Rewrite các route không có extension
-- Giữ nguyên request tới JS, CSS, PNG, SVG
-
-CloudFront Functions thường được dùng cho mục đích này.
-
----
-
-# Custom Domain và SSL
-
-Khi sử dụng CloudFront với custom domain, Certificate trong AWS Certificate Manager (ACM) bắt buộc phải nằm tại vùng **us-east-1 (N. Virginia)**.
-
-Đây là lỗi rất phổ biến với người mới. Ví dụ cấu hình lỗi:
-
-- Bucket ở Singapore
-- Certificate ở Singapore
-
-Kết quả là CloudFront sẽ không nhận và sử dụng được Certificate đó.
-
----
-
-# Các lỗi thường gặp
-
-## 403 Access Denied
-
-Cần kiểm tra lại:
-
-- Bucket Policy
-- OAC đã attach chưa
-- Origin có dùng đúng REST Endpoint không
-- Object có tồn tại không
-- Path có đúng chữ hoa chữ thường không
-
----
-
-## Website vẫn hiển thị bản cũ
-
-Cần kiểm tra lại các giá trị: Cache-Control, Age, X-Cache, ETag, Last-Modified.
-
----
-
-## Custom Domain không hoạt động
-
-Cần kiểm tra lại:
-
-- ACM đã đặt ở us-east-1 chưa
-- Certificate đã được validate thành công chưa
-- Alternate Domain Name (CNAME) trong CloudFront
-- Cấu hình DNS Record tại nhà đăng ký tên miền
-
----
-
-# Ưu điểm của kiến trúc
-
-- S3 không public
-- HTTPS mặc định
-- CDN toàn cầu
-- Hỗ trợ custom domain
-- Quản lý cache hiệu quả
-- Dễ mở rộng với WAF và Monitoring
-
----
-
-# Một số hạn chế
-
-- Cấu hình phức tạp hơn
-- Khó debug hơn
-- Phát sinh chi phí CloudFront
-- Cần hiểu rõ Bucket Policy và OAC
-
----
-
-# Hướng phát triển tiếp theo
-
-Sau khi triển khai thành công bằng AWS Console, bước tiếp theo nên là chuyển sang Infrastructure as Code.
-
-Một số lựa chọn phổ biến:
-
-- Terraform
-- AWS CDK
-- CloudFormation
-
-Có thể quản lý toàn bộ S3 Bucket, CloudFront Distribution, OAC, Bucket Policy, Cache Behavior, Custom Domain bằng mã nguồn thay vì thao tác thủ công.
-
----
-
-# Tích hợp CI/CD
-
-Một pipeline đơn giản có thể bao gồm các bước tuần tự:
-
-1. Build frontend
-2. Upload assets lên S3
-3. Upload index.html
-4. CloudFront Invalidation
-5. Smoke Test
-
-Các công cụ phổ biến: GitHub Actions, GitLab CI/CD, AWS CodePipeline.
-
----
-
-# Kết luận
-
-Việc host static website bằng Amazon S3 là một bài thực hành rất tốt cho người mới học AWS.
-
-Tuy nhiên, khi muốn tiếp cận theo hướng gần production hơn, kiến trúc sử dụng Amazon S3 Private Bucket, Amazon CloudFront và Origin Access Control sẽ là lựa chọn phù hợp hơn.
-
-Mô hình này giúp nâng cao bảo mật, tối ưu hiệu năng, quản lý cache hiệu quả và tạo nền tảng tốt để tiếp tục mở rộng sang Infrastructure as Code, CI/CD, Monitoring và các quy trình vận hành thực tế.
-
-<h2 style="text-align:center;">Sơ đồ kiến trúc</h2>
-
-![Photo](/images/3-Blog/diagram1.jpg)
-
-**Link bài viết** : https://www.facebook.com/groups/awsstudygroupfcj/permalink/2180621306036163
+# Mục tiêu
+
+Mục này chuẩn bị máy tính Windows, VS Code, cấu hình AWS CLI SSO và tập hợp quyền (permission set) AWS cần thiết để triển khai workshop. Người đọc bắt đầu mà không có mã nguồn cục bộ.
+
+{{% notice warning %}}
+Chạy các câu lệnh Windows trong **Windows PowerShell**. Sau đó, khi workshop mở EC2 thông qua Session Manager, các câu lệnh được đánh dấu là **EC2 Linux terminal** phải được chạy bên trong terminal trình duyệt đó. Không trộn lẫn dấu backtick (`) của PowerShell với dấu gạch chéo ngược (\) của Linux shell.
+{{% /notice %}}
+
+# 1. Cài đặt các công cụ cục bộ
+
+Mở **Windows PowerShell với quyền Administrator** và cài đặt các công cụ được yêu cầu:
+
+~~~powershell
+winget install --id Microsoft.VisualStudioCode -e
+winget install --id Git.Git -e
+winget install --id Amazon.AWSCLI -e
+winget install --id Hashicorp.Terraform -e
+~~~
+
+Cài đặt OPA bằng file binary Windows cố định:
+
+~~~powershell
+New-Item -ItemType Directory -Force C:\Tools\opa | Out-Null
+Invoke-WebRequest -Uri "https://github.com/open-policy-agent/opa/releases/download/v1.7.1/opa_windows_amd64.exe" -OutFile "C:\Tools\opa\opa.exe"
+$CurrentUserPath = [Environment]::GetEnvironmentVariable("Path", "User")
+if ($CurrentUserPath -notlike "*C:\Tools\opa*") {{
+  [Environment]::SetEnvironmentVariable("Path", "$CurrentUserPath;C:\Tools\opa", "User")
+}}
+Write-Host "Close this PowerShell window and open a new PowerShell window before checking opa version."
+~~~
+
+Đóng PowerShell, mở một cửa sổ PowerShell mới, sau đó kiểm tra lại:
+
+~~~powershell
+git --version
+aws --version
+terraform version
+opa version
+code --version
+~~~
+
+Kết quả mong đợi: mọi câu lệnh đều in ra thông tin phiên bản. Nếu có câu lệnh nào không tìm thấy, hãy cài đặt lại công cụ đó trước khi tiếp tục.
+
+# 2. Tạo người dùng AWS IAM Identity Center
+
+Mở AWS Console bằng tài khoản administrator (quản trị viên).
+
+1. Tìm kiếm **IAM Identity Center**.
+2. Mở **IAM Identity Center**.
+![Photo](/images/5-Workshop/private-by-default/screen2,1.png)
+
+3. Nếu IAM Identity Center chưa được bật, nhấp vào **Enable**.
+![Photo](/images/5-Workshop/private-by-default/screen2,2.jpg)
+![Photo](/images/5-Workshop/private-by-default/screen2,3.jpg)
+
+4. Đi tới mục **Users**.
+5. Nhấp vào **Add user**.
+![Photo](/images/5-Workshop/private-by-default/screen2,4.jpg)
+6. Tên người dùng (User name): `mvp-builder`.
+7. Email: sử dụng email sẽ dùng để đăng nhập vào AWS.
+8. Hoàn tất việc tạo người dùng.
+![Photo](/images/5-Workshop/private-by-default/screen2,5.jpg)
+
+# 3. Tạo tập hợp quyền (Permission set)
+
+1. Trong **IAM Identity Center**, đi tới mục **Permission sets**.
+![Photo](/images/5-Workshop/private-by-default/screen2,6.png)
+
+2. Nhấp vào **Create permission set**.
+![Photo](/images/5-Workshop/private-by-default/screen2,7.png)
+
+3. Chọn **Custom permission set**.
+![Photo](/images/5-Workshop/private-by-default/screen2,8.jpg)
+4. Tên tập hợp quyền (Permission set name): `PrivateWorkloadTerraformOperator`.
+5. Thời gian phiên làm việc (Session duration): chọn 4 giờ hoặc 8 giờ.
+6. Tạo tập hợp quyền.
+![Photo](/images/5-Workshop/private-by-default/screen2,9.png)
+7. Mở `PrivateWorkloadTerraformOperator`.
+8. Đi tới **Permissions Set và nhấp vào MVPTerraformOperator**.
+9. Nhấp vào **Add inline policy** hoặc **Edit inline policy**.
+![Photo](/images/5-Workshop/private-by-default/screen2,10.jpg)
+
+10. Chọn tab **JSON**.
+11. Xóa bất kỳ đoạn JSON giữ chỗ (placeholder) nào đang có sẵn.
+12. Dán toàn bộ chính sách (policy) bên dưới vào.
+Chính sách inline đầy đủ:
+
+~~~json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "PrivateWorkloadReadDiscovery",
+            "Effect": "Allow",
+            "Action": [
+                "sts:GetCallerIdentity",
+                "ec2:Describe*",
+                "rds:Describe*",
+                "kms:List*",
+                "kms:Describe*",
+                "kms:GetKeyPolicy",
+                "kms:GetKeyRotationStatus",
+                "logs:Describe*",
+                "logs:ListTagsForResource",
+                "cloudtrail:Describe*",
+                "cloudtrail:Get*",
+                "cloudtrail:ListTags",
+                "config:Describe*",
+                "config:Get*",
+                "cloudwatch:Describe*",
+                "cloudwatch:List*",
+                "sqs:ListQueues",
+                "sqs:GetQueueAttributes",
+                "sqs:GetQueueUrl",
+                "sqs:ListQueueTags",
+                "sns:ListTopics",
+                "sns:ListSubscriptions",
+                "sns:ListSubscriptionsByTopic",
+                "sns:GetTopicAttributes",
+                "sns:GetSubscriptionAttributes",
+                "sns:ListTagsForResource",
+                "scheduler:ListSchedules",
+                "scheduler:GetSchedule",
+                "scheduler:ListScheduleGroups",
+                "scheduler:ListTagsForResource",
+                "events:DescribeRule",
+                "events:ListRules",
+                "events:ListTargetsByRule",
+                "events:ListTagsForResource",
+                "s3:ListAllMyBuckets",
+                "s3:GetBucketLocation",
+                "s3:GetBucketPolicy",
+                "s3:GetBucketVersioning",
+                "s3:GetBucketPublicAccessBlock",
+                "s3:GetEncryptionConfiguration",
+                "s3:GetBucketTagging",
+                "s3:GetBucketCORS",
+                "s3:GetBucketWebsite",
+                "s3:GetBucketLogging",
+                "s3:GetBucketNotification",
+                "s3:GetBucketRequestPayment",
+                "s3:GetLifecycleConfiguration",
+                "s3:GetReplicationConfiguration",
+                "s3:GetAccelerateConfiguration",
+                "s3:GetBucketObjectLockConfiguration",
+                "s3:GetBucketOwnershipControls",
+                "iam:Get*",
+                "iam:List*",
+                "ssm:Describe*",
+                "ssm:GetParameter",
+                "ssm:GetParameters",
+                "ssm:GetParametersByPath",
+                "ssm:ListTagsForResource"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "PrivateWorkloadNetwork",
+            "Effect": "Allow",
+            "Action": [
+                "ec2:CreateVpc",
+                "ec2:DeleteVpc",
+                "ec2:ModifyVpcAttribute",
+                "ec2:CreateSubnet",
+                "ec2:DeleteSubnet",
+                "ec2:ModifySubnetAttribute",
+                "ec2:CreateRouteTable",
+                "ec2:DeleteRouteTable",
+                "ec2:AssociateRouteTable",
+                "ec2:DisassociateRouteTable",
+                "ec2:ReplaceRouteTableAssociation",
+                "ec2:CreateRoute",
+                "ec2:DeleteRoute",
+                "ec2:CreateSecurityGroup",
+                "ec2:DeleteSecurityGroup",
+                "ec2:AuthorizeSecurityGroupIngress",
+                "ec2:RevokeSecurityGroupIngress",
+                "ec2:AuthorizeSecurityGroupEgress",
+                "ec2:RevokeSecurityGroupEgress",
+                "ec2:CreateVpcEndpoint",
+                "ec2:DeleteVpcEndpoints",
+                "ec2:ModifyVpcEndpoint",
+                "ec2:CreateFlowLogs",
+                "ec2:DeleteFlowLogs",
+                "ec2:CreateTags",
+                "ec2:DeleteTags"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "PrivateWorkloadEC2PrivateWorker",
+            "Effect": "Allow",
+            "Action": [
+                "ec2:RunInstances",
+                "ec2:TerminateInstances",
+                "ec2:StopInstances",
+                "ec2:StartInstances",
+                "ec2:RebootInstances",
+                "ec2:ModifyInstanceAttribute",
+                "ec2:AssociateIamInstanceProfile",
+                "ec2:ReplaceIamInstanceProfileAssociation",
+                "ec2:DisassociateIamInstanceProfile"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "PrivateWorkloadRDSPostgreSQL",
+            "Effect": "Allow",
+            "Action": [
+                "rds:CreateDBSubnetGroup",
+                "rds:DeleteDBSubnetGroup",
+                "rds:ModifyDBSubnetGroup",
+                "rds:CreateDBInstance",
+                "rds:DeleteDBInstance",
+                "rds:ModifyDBInstance",
+                "rds:AddTagsToResource",
+                "rds:RemoveTagsFromResource",
+                "rds:ListTagsForResource"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "PrivateWorkloadKMS",
+            "Effect": "Allow",
+            "Action": [
+                "kms:CreateKey",
+                "kms:ScheduleKeyDeletion",
+                "kms:CancelKeyDeletion",
+                "kms:EnableKeyRotation",
+                "kms:DisableKeyRotation",
+                "kms:GetKeyRotationStatus",
+                "kms:CreateAlias",
+                "kms:DeleteAlias",
+                "kms:UpdateAlias",
+                "kms:UpdateKeyDescription",
+                "kms:PutKeyPolicy",
+                "kms:GetKeyPolicy",
+                "kms:TagResource",
+                "kms:UntagResource",
+                "kms:ListResourceTags",
+                "kms:CreateGrant",
+                "kms:ListGrants",
+                "kms:RevokeGrant",
+                "kms:Encrypt",
+                "kms:Decrypt",
+                "kms:ReEncryptFrom",
+                "kms:ReEncryptTo",
+                "kms:GenerateDataKey",
+                "kms:GenerateDataKeyWithoutPlaintext",
+                "kms:GenerateDataKeyPair",
+                "kms:GenerateDataKeyPairWithoutPlaintext"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "PrivateWorkloadSSMParameterStore",
+            "Effect": "Allow",
+            "Action": [
+                "ssm:PutParameter",
+                "ssm:DeleteParameter",
+                "ssm:AddTagsToResource",
+                "ssm:RemoveTagsFromResource",
+                "ssm:ListTagsForResource"
+            ],
+            "Resource": "arn:aws:ssm:us-east-1:*:parameter/mvp/*"
+        },
+        {
+            "Sid": "PrivateWorkloadLoggingAudit",
+            "Effect": "Allow",
+            "Action": [
+                "cloudtrail:CreateTrail",
+                "cloudtrail:UpdateTrail",
+                "cloudtrail:DeleteTrail",
+                "cloudtrail:StartLogging",
+                "cloudtrail:StopLogging",
+                "cloudtrail:PutEventSelectors",
+                "cloudtrail:AddTags",
+                "cloudtrail:RemoveTags",
+                "cloudtrail:ListTags",
+                "logs:CreateLogGroup",
+                "logs:DeleteLogGroup",
+                "logs:PutRetentionPolicy",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "logs:TagResource",
+                "logs:UntagResource",
+                "logs:AssociateKmsKey",
+                "logs:DisassociateKmsKey",
+                "config:PutConfigurationRecorder",
+                "config:DeleteConfigurationRecorder",
+                "config:StartConfigurationRecorder",
+                "config:StopConfigurationRecorder",
+                "config:PutDeliveryChannel",
+                "config:DeleteDeliveryChannel"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "PrivateWorkloadCloudWatchAlarms",
+            "Effect": "Allow",
+            "Action": [
+                "cloudwatch:PutMetricAlarm",
+                "cloudwatch:DeleteAlarms",
+                "cloudwatch:EnableAlarmActions",
+                "cloudwatch:DisableAlarmActions",
+                "cloudwatch:SetAlarmState",
+                "cloudwatch:TagResource",
+                "cloudwatch:UntagResource"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "PrivateWorkloadS3",
+            "Effect": "Allow",
+            "Action": [
+                "s3:CreateBucket",
+                "s3:DeleteBucket",
+                "s3:PutEncryptionConfiguration",
+                "s3:GetEncryptionConfiguration",
+                "s3:PutBucketVersioning",
+                "s3:PutBucketPolicy",
+                "s3:PutBucketPublicAccessBlock",
+                "s3:GetBucketPublicAccessBlock",
+                "s3:GetBucketPolicy",
+                "s3:GetBucketVersioning",
+                "s3:GetBucketLocation",
+                "s3:GetBucketTagging",
+                "s3:PutBucketTagging",
+                "s3:GetBucketAcl",
+                "s3:PutBucketAcl",
+                "s3:GetBucketCORS",
+                "s3:GetBucketWebsite",
+                "s3:GetBucketLogging",
+                "s3:GetBucketNotification",
+                "s3:GetBucketRequestPayment",
+                "s3:GetLifecycleConfiguration",
+                "s3:GetReplicationConfiguration",
+                "s3:GetAccelerateConfiguration",
+                "s3:GetBucketObjectLockConfiguration",
+                "s3:GetBucketOwnershipControls",
+                "s3:ListBucket",
+                "s3:GetObject",
+                "s3:PutObject",
+                "s3:DeleteObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::private-by-default-mvp-*",
+                "arn:aws:s3:::private-by-default-mvp-*/*"
+            ]
+        },
+        {
+            "Sid": "PrivateWorkloadSQSBusinessFlow",
+            "Effect": "Allow",
+            "Action": [
+                "sqs:CreateQueue",
+                "sqs:DeleteQueue",
+                "sqs:GetQueueAttributes",
+                "sqs:SetQueueAttributes",
+                "sqs:GetQueueUrl",
+                "sqs:ListQueues",
+                "sqs:ListQueueTags",
+                "sqs:TagQueue",
+                "sqs:UntagQueue",
+                "sqs:SendMessage",
+                "sqs:ReceiveMessage",
+                "sqs:DeleteMessage",
+                "sqs:ChangeMessageVisibility",
+                "sqs:PurgeQueue"
+            ],
+            "Resource": [
+                "arn:aws:sqs:us-east-1:*:private-by-default-mvp-*"
+            ]
+        },
+        {
+            "Sid": "PrivateWorkloadSNSAlerts",
+            "Effect": "Allow",
+            "Action": [
+                "sns:CreateTopic",
+                "sns:DeleteTopic",
+                "sns:GetTopicAttributes",
+                "sns:SetTopicAttributes",
+                "sns:ListTopics",
+                "sns:ListSubscriptions",
+                "sns:ListSubscriptionsByTopic",
+                "sns:ListTagsForResource",
+                "sns:TagResource",
+                "sns:UntagResource",
+                "sns:Subscribe",
+                "sns:Unsubscribe",
+                "sns:GetSubscriptionAttributes",
+                "sns:SetSubscriptionAttributes",
+                "sns:Publish"
+            ],
+            "Resource": [
+                "arn:aws:sns:us-east-1:*:private-by-default-mvp-*"
+            ]
+        },
+        {
+            "Sid": "PrivateWorkloadSNSReadGlobal",
+            "Effect": "Allow",
+            "Action": [
+                "sns:ListTopics",
+                "sns:ListSubscriptions"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "PrivateWorkloadSchedulerBusinessFlow",
+            "Effect": "Allow",
+            "Action": [
+                "scheduler:CreateSchedule",
+                "scheduler:DeleteSchedule",
+                "scheduler:GetSchedule",
+                "scheduler:UpdateSchedule",
+                "scheduler:ListSchedules",
+                "scheduler:ListScheduleGroups",
+                "scheduler:TagResource",
+                "scheduler:UntagResource",
+                "scheduler:ListTagsForResource"
+            ],
+            "Resource": [
+                "arn:aws:scheduler:us-east-1:*:schedule/*/private-by-default-mvp-*",
+                "arn:aws:scheduler:us-east-1:*:schedule-group/*"
+            ]
+        },
+        {
+            "Sid": "PrivateWorkloadEventBridgeRuleAlternative",
+            "Effect": "Allow",
+            "Action": [
+                "events:PutRule",
+                "events:DeleteRule",
+                "events:DescribeRule",
+                "events:EnableRule",
+                "events:DisableRule",
+                "events:PutTargets",
+                "events:RemoveTargets",
+                "events:ListRules",
+                "events:ListTargetsByRule",
+                "events:TagResource",
+                "events:UntagResource",
+                "events:ListTagsForResource"
+            ],
+            "Resource": [
+                "arn:aws:events:us-east-1:*:rule/private-by-default-mvp-*"
+            ]
+        },
+        {
+            "Sid": "PrivateWorkloadIAMServiceRoles",
+            "Effect": "Allow",
+            "Action": [
+                "iam:CreateRole",
+                "iam:DeleteRole",
+                "iam:UpdateAssumeRolePolicy",
+                "iam:AttachRolePolicy",
+                "iam:DetachRolePolicy",
+                "iam:PutRolePolicy",
+                "iam:DeleteRolePolicy",
+                "iam:TagRole",
+                "iam:UntagRole"
+            ],
+            "Resource": [
+                "arn:aws:iam::*:role/private-by-default-mvp-*",
+                "arn:aws:iam::*:role/aws-service-role/*"
+            ]
+        },
+        {
+            "Sid": "PrivateWorkloadIAMInstanceProfilesForPrivateWorker",
+            "Effect": "Allow",
+            "Action": [
+                "iam:CreateInstanceProfile",
+                "iam:GetInstanceProfile",
+                "iam:DeleteInstanceProfile",
+                "iam:AddRoleToInstanceProfile",
+                "iam:RemoveRoleFromInstanceProfile",
+                "iam:TagInstanceProfile",
+                "iam:UntagInstanceProfile",
+                "iam:ListInstanceProfilesForRole"
+            ],
+            "Resource": [
+                "arn:aws:iam::*:instance-profile/private-by-default-mvp-*",
+                "arn:aws:iam::*:role/private-by-default-mvp-*"
+            ]
+        },
+        {
+            "Sid": "PrivateWorkloadPassRoleToAWSServiceOnly",
+            "Effect": "Allow",
+            "Action": "iam:PassRole",
+            "Resource": "arn:aws:iam::*:role/private-by-default-mvp-*",
+            "Condition": {
+                "StringEquals": {
+                    "iam:PassedToService": [
+                        "ec2.amazonaws.com",
+                        "rds.amazonaws.com",
+                        "config.amazonaws.com",
+                        "vpc-flow-logs.amazonaws.com",
+                        "scheduler.amazonaws.com",
+                        "events.amazonaws.com"
+                    ]
+                }
+            }
+        }
+    ]
+}
+~~~
+
+13. Nhấp Create hoặc Save changes để lưu lại.
+![Photo](/images/5-Workshop/private-by-default/screen2,11.jpg)
+
+# 4. Gán người dùng vào tài khoản AWS
+
+1. Trong **IAM Identity Center**, đi tới mục **AWS accounts**.
+2. Chọn tài khoản AWS mục tiêu.
+3. Nhấp **Assign users or groups**.
+![Photo](/images/5-Workshop/private-by-default/screen4,1.png)
+
+4. Chọn người dùng `mvp-builder`.
+![Photo](/images/5-Workshop/private-by-default/screen4,2.png)
+5. Chọn tập hợp quyền `PrivateWorkloadTerraformOperator`.
+![Photo](/images/5-Workshop/private-by-default/screen4,3.png)
+6. Gửi (Submit) yêu cầu gán người dùng.
+![Photo](/images/5-Workshop/private-by-default/screen4,4.png)
+
+# 5. Cấu hình AWS CLI SSO profile
+
+Trong IAM Identity Center, mở phần **Settings** (Cài đặt) và sao chép đường dẫn **AWS access portal URL**.
+
+Chạy lệnh này trong Windows PowerShell:
+
+~~~powershell
+aws configure sso
+~~~
+
+Sử dụng các câu trả lời sau:
+
+~~~text
+SSO session name: mvp
+SSO start URL: dán URL cổng truy cập AWS (AWS access portal URL) từ IAM Identity Center vào đây
+SSO region: us-east-1
+SSO registration scopes: nhấn Enter
+Account: chọn tài khoản AWS của bạn
+Role: PrivateWorkloadTerraformOperator
+CLI default client Region: us-east-1
+CLI default output format: json
+CLI profile name: mvp
+~~~
+
+Sau đó kiểm tra lại cấu hình profile:
+
+~~~powershell
+aws sso logout
+aws sso login --profile mvp --no-browser
+aws sts get-caller-identity --profile mvp
+~~~
+
+Kết quả mong đợi: câu lệnh in ra ID tài khoản AWS của bạn. Chỉ tiếp tục sau khi bước này chạy thành công.
+
+# 6. Kiểm tra lại môi trường cục bộ trước khi tiếp tục
+
+Trước khi tải mã nguồn về, hãy xác nhận rằng tất cả các công cụ bắt buộc đều hoạt động bình thường.
+
+Chạy các lệnh:
+
+git --version
+aws --version
+terraform version
+opa version
+code --version
+
+Kết quả mong đợi:
+
+git version x.x.x
+aws-cli/x.x.x
+Terraform v1.x.x
+Version: x.x.x
+1.xx.x
+
+Nếu có bất kỳ câu lệnh nào trả về lỗi:
+
+command not found
+
+hoặc
+
+is not recognized as an internal or external command
+
+Hãy đóng PowerShell, mở lại và kiểm tra xem công cụ đó đã được cài đặt chính xác chưa.
+
+# 7. Region AWS khuyến nghị
+
+Workshop này đã được kiểm tra và thử nghiệm tại region:
+
+us-east-1 (N. Virginia)
+
+Việc sử dụng một region khác có thể yêu cầu bạn phải thay đổi:
+
+AMI IDs
+Khả năng đáp ứng của dịch vụ (Service availability)
+Ước tính chi phí (Pricing estimates)
+Tên dịch vụ VPC Endpoint (VPC Endpoint service names)
+
+Để đảm bảo tính nhất quán và dễ tái hiện, hãy sử dụng:
+
+us-east-1
+
+xuyên suốt workshop này.
+
+# 8. Ước tính chi phí triển khai
+
+Dự án này được thiết kế có chủ đích như một mô hình trình diễn cơ sở hạ tầng bảo mật với chi phí thấp.
+
+Các dịch vụ chính cấu thành chi phí:
+
+Dịch vụ | Chi phí ước tính hàng tháng
+EC2 Private Worker | 8–12 USD
+RDS PostgreSQL | 12–20 USD
+VPC Endpoints | 45–60 USD
+CloudWatch / SNS / SQS | 1–3 USD
+CloudTrail / Config / Logs | 2–5 USD
+
+Tổng chi phí ước tính:
+
+85–95 USD/tháng
+
+khi chạy liên tục 24/7.
+
+Chi phí sử dụng thực tế cho workshop thường thấp hơn nhiều vì môi trường này chỉ chạy trong một khoảng thời gian giới hạn.
+
+Nhiều học viên nhận thấy chỉ tiêu tốn một vài AWS credit vì:
+
+Hệ thống chỉ được triển khai trong thời gian ngắn
+Có thể áp dụng các hạn mức của Free Tier (Tầng miễn phí)
+Các tài nguyên được xóa bỏ ngay sau khi thử nghiệm xong
+
+# 9. Tiêu chí thành công
+
+Vào cuối workshop, người đọc cần xác nhận được các điều sau:
+
+Bảo mật
+
+✓ Worker không có IP công khai (public IP)
+
+✓ Cơ sở dữ liệu không có endpoint công khai (public endpoint)
+
+✓ Không sử dụng SSH
+
+✓ Truy cập qua Session Manager hoạt động bình thường
+
+✓ Lưu lượng truy cập đi qua VPC Endpoints
+
+Cơ sở hạ tầng
+
+✓ Lệnh triển khai Terraform (deploy) thành công
+
+✓ Lệnh hủy tài nguyên Terraform (destroy) thành công
+
+✓ Xác thực chính sách OPA (Open Policy Agent) thành công
+
+Luồng nghiệp vụ (Business Flow)
+
+✓ Tin nhắn gửi đến được SQS
+
+✓ Worker nhận được tin nhắn từ hàng đợi
+
+✓ Worker xử lý thành công công việc
+
+✓ CloudWatch nhận được log
+
+✓ Tin nhắn lỗi được chuyển đến DLQ (Dead-Letter Queue)
+
+✓ Thông báo qua email của SNS hoạt động bình thường
+
+Kiểm toán (Audit)
+
+✓ CloudTrail ghi lại đầy đủ hoạt động
+
+✓ AWS Config ghi lại trạng thái tài nguyên
+
+✓ VPC Flow Logs tồn tại dữ liệu
+
+✓ Thu thập đầy đủ ảnh chụp màn hình làm bằng chứng
+
+# 10. Trước khi chuyển sang phần tiếp theo
+
+Xác nhận:
+
+[ ] Đã cài đặt VS Code
+
+[ ] Đã cài đặt Git
+
+[ ] Đã cài đặt AWS CLI
+
+[ ] Đã cài đặt Terraform
+
+[ ] Đã cài đặt OPA
+
+[ ] Đã tạo người dùng IAM Identity Center
+
+[ ] Đã gán tập hợp quyền (Permission set)
+
+[ ] Đăng nhập AWS SSO thành công
+
+[ ] Lệnh `aws sts get-caller-identity` hoạt động bình thường
+
+Chỉ tiếp tục sang Mục 5.3 sau khi tất cả các mục trên đã được hoàn thành.
