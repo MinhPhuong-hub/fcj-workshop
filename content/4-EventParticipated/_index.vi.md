@@ -32,7 +32,7 @@ Thông qua hai sự kiện này, tôi đã mở rộng hiểu biết về Điệ
 
 &emsp;**Thời gian:** 09:00 - 11:30 | 23/05/2026  
 
-&emsp;**Địa điểm:** Tầng 26 (Phòng 26.100), tòa nhà Bitexco, số 02 đường Hải Triều, phường Sài Gòn, thành phố Hồ Chí Min  
+&emsp;**Địa điểm:** Tầng 26 (Phòng 26.100), tòa nhà Bitexco, số 02 đường Hải Triều, phường Sài Gòn, thành phố Hồ Chí Minh  
 
 &emsp;**Vai trò:** Người tham dự (Attendee)  
 
